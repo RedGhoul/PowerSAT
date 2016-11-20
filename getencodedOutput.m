@@ -1,13 +1,14 @@
-function [OP] = getencodedOutput()
-    clear all 
-    close all 
-    x = -pi:0.01:pi;
+function [OP] = getencodedOutput(F1,F2,F3)
+    % first digit
+    sigLength = 1:1028;
     amp = 10; % amplitude
-    freq = 128; % Hz
+    SigOne = [F1,F2,F3]; % Hz
     fs = 4096; % Hz
     Ts = 1/fs;
-    signal_length = 1024;
-    n = 1:signal_length;
-    x = amp * cos(2 * pi * freq * n * Ts);
-    plot(x)
+    OutPut = zeros(1,1028);
+    %n = 1:signal_length;
+    for index=1:length(SigOne)
+    OutPut = OutPut + (amp * cos(2 * pi * SigOne(index) * sigLength * Ts));   
+    end
+    OP = [sigLength,OutPut];
 end

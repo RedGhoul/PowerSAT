@@ -22,7 +22,7 @@ function varargout = InputKeyPad(varargin)
 
 % Edit the above text to modify the response to help InputKeyPad
 
-% Last Modified by GUIDE v2.5 21-Nov-2016 00:34:42
+% Last Modified by GUIDE v2.5 21-Nov-2016 01:16:13
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -51,7 +51,9 @@ function InputKeyPad_OpeningFcn(hObject, eventdata, handles, varargin)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 % varargin   command line arguments to InputKeyPad (see VARARGIN)
-
+handles.posFD = get(handles.FDPanel,'position');
+handles.posTD = get(handles.TDPanel,'position');
+handles.posEnergy = get(handles.EnergyPanel,'position');
 % Choose default command line output for InputKeyPad
 handles.output = hObject;
 
@@ -160,14 +162,23 @@ axes(handles.OutputChart);
 plot(handles.Xaxis,startNoise(handles.currentOutput,1));
 guidata(hObject, handles);
 
-
-% --- Executes on button press in GoToFreq.
-function GoToFreq_Callback(hObject, eventdata, handles)
-% hObject    handle to GoToFreq (see GCBO)
+% --- Executes on button press in ToTimeFDPanel.
+function ToTimeFDPanel_Callback(hObject, eventdata, handles)
+% hObject    handle to ToTimeFDPanel (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+set(handles.TDPanel,'position',handles.posTD);
+set(handles.FDPanel,'position',handles.posFD);
+guidata(hObject, handles);
 
-% Hint: get(hObject,'Value') returns toggle state of GoToFreq
+% --- Executes on button press in ToFreqTDPanel.
+function ToFreqTDPanel_Callback(hObject, eventdata, handles)
+% hObject    handle to ToFreqTDPanel (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+set(handles.FDPanel,'position',handles.posTD);
+set(handles.TDPanel,'position',handles.posFD);
+guidata(hObject, handles);
 
 % --------------------------------------------------------------------
 function TD_Callback(hObject, eventdata, handles)
@@ -183,12 +194,7 @@ function FD_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 % --- Executes on button press in Energy.
 
-function Energy_Callback(hObject, eventdata, handles)
-% hObject    handle to Energy (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 
-% Hint: get(hObject,'Value') returns toggle state of Energy
 
 
 % --------------------------------------------------------------------
@@ -215,5 +221,32 @@ function GENFFT_Callback(hObject, eventdata, handles)
 % --------------------------------------------------------------------
 function GenTimeOutput_Callback(hObject, eventdata, handles)
 % hObject    handle to GenTimeOutput (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in ToTimeEnergyPanel.
+function ToTimeEnergyPanel_Callback(hObject, eventdata, handles)
+% hObject    handle to ToTimeEnergyPanel (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% --- Executes on button press in ToFreqEnergyPanel.
+function ToFreqEnergyPanel_Callback(hObject, eventdata, handles)
+% hObject    handle to ToFreqEnergyPanel (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in ToEnergyFDPanel.
+function ToEnergyFDPanel_Callback(hObject, eventdata, handles)
+% hObject    handle to ToEnergyFDPanel (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in ToEnergyTDPanel.
+function ToEnergyTDPanel_Callback(hObject, eventdata, handles)
+% hObject    handle to ToEnergyTDPanel (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)

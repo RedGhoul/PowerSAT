@@ -22,7 +22,7 @@ function varargout = InputKeyPad(varargin)
 
 % Edit the above text to modify the response to help InputKeyPad
 
-% Last Modified by GUIDE v2.5 21-Nov-2016 14:20:26
+% Last Modified by GUIDE v2.5 21-Nov-2016 18:17:46
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -56,7 +56,8 @@ handles.posTD = get(handles.TDPanel,'position');
 handles.posEnergy = get(handles.EnergyPanel,'position');
 % Choose default command line output for InputKeyPad
 handles.output = hObject;
-
+handles.currentOutput = []; % for them empty vars
+handles.Xaxis = [];
 % Update handles structure
 guidata(hObject, handles);
 
@@ -112,7 +113,8 @@ ClearPlot(hObject, eventdata, handles);
 function AddNoise_Callback(hObject, eventdata, handles)
 ClearPlot(hObject, eventdata, handles);
 axes(handles.OutputChart);
-handles.currentOutput = startNoise(handles.currentOutput,1)
+NoisePower = str2num(get(handles.NoisePower,'String'));
+handles.currentOutput = startNoise(handles.currentOutput,NoisePower);
 plot(handles.Xaxis,handles.currentOutput);
 guidata(hObject, handles);
 
@@ -125,21 +127,24 @@ guidata(hObject, handles);
 
 % Transistion Buttons
 function ToTimeFDPanel_Callback(hObject, eventdata, handles)
-% hObject    handle to ToTimeFDPanel (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 set(handles.TDPanel,'position',handles.posTD);
 set(handles.FDPanel,'position',handles.posFD);
 guidata(hObject, handles);
 
 % --- Executes on button press in ToFreqTDPanel.
 function ToFreqTDPanel_Callback(hObject, eventdata, handles)
-% hObject    handle to ToFreqTDPanel (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-set(handles.FDPanel,'position',handles.posTD);
-set(handles.TDPanel,'position',handles.posFD);
+ClearPlot(hObject, eventdata, handles);
+axes(handles.FrequencyPlot);
+    if not(isempty(handles.currentOutput))
+        set(handles.FDPanel,'position',handles.posTD);
+        set(handles.TDPanel,'position',handles.posFD);
+        handles.currentOutput = fft(handles.currentOutput);
+        stem(handles.Xaxis,handles.currentOutput);
+    else 
+        set(handles.ErrorTD,'Visible','On');
+    end
 guidata(hObject, handles);
+
 
 % --------------------------------------------------------------------
 function TD_Callback(hObject, eventdata, handles)
@@ -209,3 +214,26 @@ function ToEnergyTDPanel_Callback(hObject, eventdata, handles)
 % hObject    handle to ToEnergyTDPanel (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+
+
+function NoisePower_Callback(hObject, eventdata, handles)
+% hObject    handle to NoisePower (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of NoisePower as text
+%        str2double(get(hObject,'String')) returns contents of NoisePower as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function NoisePower_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to NoisePower (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end

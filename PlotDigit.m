@@ -24,6 +24,10 @@ axes(handles.OutputChart);
         otherwise
             [len,output] = genEncodedOutput(100,250,300);
     end 
+    isErrorOn  =  get(handles.ErrorTD,'Visible');
+    if isErrorOn
+        set(handles.ErrorTD,'Visible','Off');
+    end 
 handles.currentOutput = randAmp(output);
 handles.Xaxis = len;
 plot(len,output);

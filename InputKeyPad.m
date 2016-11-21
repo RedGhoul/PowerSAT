@@ -22,7 +22,7 @@ function varargout = InputKeyPad(varargin)
 
 % Edit the above text to modify the response to help InputKeyPad
 
-% Last Modified by GUIDE v2.5 20-Nov-2016 23:16:39
+% Last Modified by GUIDE v2.5 21-Nov-2016 00:34:42
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -136,7 +136,14 @@ function Nine_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 PlotDigit(hObject, eventdata, handles, 9)
 
+% --- Executes on button press in Zero.
+function Zero_Callback(hObject, eventdata, handles)
+% hObject    handle to Zero (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
 % --- Executes on button press in Clear.
+PlotDigit(hObject, eventdata, handles, 9)
+
 function Clear_Callback(hObject, eventdata, handles)
 % hObject    handle to Clear (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -152,3 +159,61 @@ ClearPlot(hObject, eventdata, handles);
 axes(handles.OutputChart);
 plot(handles.Xaxis,startNoise(handles.currentOutput,1));
 guidata(hObject, handles);
+
+
+% --- Executes on button press in GoToFreq.
+function GoToFreq_Callback(hObject, eventdata, handles)
+% hObject    handle to GoToFreq (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of GoToFreq
+
+% --------------------------------------------------------------------
+function TD_Callback(hObject, eventdata, handles)
+% hObject    handle to TD (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function FD_Callback(hObject, eventdata, handles)
+% hObject    handle to FD (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+% --- Executes on button press in Energy.
+
+function Energy_Callback(hObject, eventdata, handles)
+% hObject    handle to Energy (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of Energy
+
+
+% --------------------------------------------------------------------
+function File_Callback(hObject, eventdata, handles)
+% hObject    handle to File (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function ToJpeg_Callback(hObject, eventdata, handles)
+% hObject    handle to ToJpeg (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function GENFFT_Callback(hObject, eventdata, handles)
+% hObject    handle to GENFFT (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function GenTimeOutput_Callback(hObject, eventdata, handles)
+% hObject    handle to GenTimeOutput (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)

@@ -85,56 +85,56 @@ function Two_Callback(hObject, eventdata, handles)
 % hObject    handle to Two (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-PlotDigit(hObject, eventdata, handles, 2)
+PlotDigit(hObject, eventdata, handles, 1)
 
 % --- Executes on button press in Seven.
 function Seven_Callback(hObject, eventdata, handles)
 % hObject    handle to Seven (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-PlotDigit(hObject, eventdata, handles, 3)
+PlotDigit(hObject, eventdata, handles, 1)
 
 % --- Executes on button press in Four.
 function Four_Callback(hObject, eventdata, handles)
 % hObject    handle to Four (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-PlotDigit(hObject, eventdata, handles, 4)
+PlotDigit(hObject, eventdata, handles, 1)
 
 % --- Executes on button press in Five.
 function Five_Callback(hObject, eventdata, handles)
 % hObject    handle to Five (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-PlotDigit(hObject, eventdata, handles, 5)
+PlotDigit(hObject, eventdata, handles, 1)
 
 % --- Executes on button press in Eight.
 function Eight_Callback(hObject, eventdata, handles)
 % hObject    handle to Eight (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-PlotDigit(hObject, eventdata, handles, 6)
+PlotDigit(hObject, eventdata, handles, 1)
 
 % --- Executes on button press in Three.
 function Three_Callback(hObject, eventdata, handles)
 % hObject    handle to Three (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-PlotDigit(hObject, eventdata, handles, 7)
+PlotDigit(hObject, eventdata, handles, 1)
 
 % --- Executes on button press in Six.
 function Six_Callback(hObject, eventdata, handles)
 % hObject    handle to Six (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-PlotDigit(hObject, eventdata, handles, 8)
+PlotDigit(hObject, eventdata, handles, 1)
 
 % --- Executes on button press in Nine.
 function Nine_Callback(hObject, eventdata, handles)
 % hObject    handle to Nine (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-PlotDigit(hObject, eventdata, handles, 9)
+PlotDigit(hObject, eventdata, handles, 1)
 
 % --- Executes on button press in Clear.
 function Clear_Callback(hObject, eventdata, handles)

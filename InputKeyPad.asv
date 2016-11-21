@@ -22,7 +22,7 @@ function varargout = InputKeyPad(varargin)
 
 % Edit the above text to modify the response to help InputKeyPad
 
-% Last Modified by GUIDE v2.5 21-Nov-2016 00:34:42
+% Last Modified by GUIDE v2.5 21-Nov-2016 14:16:46
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -51,7 +51,9 @@ function InputKeyPad_OpeningFcn(hObject, eventdata, handles, varargin)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 % varargin   command line arguments to InputKeyPad (see VARARGIN)
-
+handles.posFD = get(handles.FDPanel,'position');
+handles.posTD = get(handles.TDPanel,'position');
+handles.posEnergy = get(handles.EnergyPanel,'position');
 % Choose default command line output for InputKeyPad
 handles.output = hObject;
 
@@ -73,85 +75,41 @@ function varargout = InputKeyPad_OutputFcn(hObject, eventdata, handles)
 varargout{1} = handles.output;
 
 
-% --- Executes on button press in One.
 function One_Callback(hObject, eventdata, handles)
-% hObject    handle to One (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 PlotDigit(hObject, eventdata, handles, 1)
 
-% --- Executes on button press in Two.
 function Two_Callback(hObject, eventdata, handles)
-% hObject    handle to Two (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 PlotDigit(hObject, eventdata, handles, 2)
 
-% --- Executes on button press in Seven.
 function Seven_Callback(hObject, eventdata, handles)
-% hObject    handle to Seven (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 PlotDigit(hObject, eventdata, handles, 3)
 
-% --- Executes on button press in Four.
 function Four_Callback(hObject, eventdata, handles)
-% hObject    handle to Four (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 PlotDigit(hObject, eventdata, handles, 4)
 
-% --- Executes on button press in Five.
 function Five_Callback(hObject, eventdata, handles)
-% hObject    handle to Five (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 PlotDigit(hObject, eventdata, handles, 5)
 
-% --- Executes on button press in Eight.
 function Eight_Callback(hObject, eventdata, handles)
-% hObject    handle to Eight (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 PlotDigit(hObject, eventdata, handles, 6)
 
-% --- Executes on button press in Three.
 function Three_Callback(hObject, eventdata, handles)
-% hObject    handle to Three (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 PlotDigit(hObject, eventdata, handles, 7)
 
-% --- Executes on button press in Six.
 function Six_Callback(hObject, eventdata, handles)
-% hObject    handle to Six (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 PlotDigit(hObject, eventdata, handles, 8)
 
-% --- Executes on button press in Nine.
 function Nine_Callback(hObject, eventdata, handles)
-% hObject    handle to Nine (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 PlotDigit(hObject, eventdata, handles, 9)
 
-% --- Executes on button press in Zero.
 function Zero_Callback(hObject, eventdata, handles)
-% hObject    handle to Zero (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-% --- Executes on button press in Clear.
 PlotDigit(hObject, eventdata, handles, 9)
 
+% functionality Buttons
 function Clear_Callback(hObject, eventdata, handles)
-% hObject    handle to Clear (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 ClearPlot(hObject, eventdata, handles);
 
-% --- Executes on button press in WithNoise.
-function WithNoise_Callback(hObject, eventdata, handles)
+function AddNoise_Callback(hObject, eventdata, handles)
 % hObject    handle to WithNoise (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -160,23 +118,30 @@ axes(handles.OutputChart);
 plot(handles.Xaxis,startNoise(handles.currentOutput,1));
 guidata(hObject, handles);
 
-
-% --- Executes on button press in GoToFreq. The FreqPanel thing
-function GoToFreq_Callback(hObject, eventdata, handles)
-% hObject    handle to GoToFreq (see GCBO)
+% --- Executes on button press in InsertDelaybtn.
+function InsertDelaybtn_Callback(hObject, eventdata, handles)
+% hObject    handle to InsertDelaybtn (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-%Place panels into each tab
-%Reposition each panel to same location as panel 1
-set(handles.FDPanel,'position',get(handles.TDPanel,'position'));
-set(handles.TDPanel,'position',get(handles.FDPanel,'position'));
 
-function Energy_Callback(hObject, eventdata, handles)
-% hObject    handle to Energy (see GCBO)
+
+% --- Executes on button press in ToTimeFDPanel.
+function ToTimeFDPanel_Callback(hObject, eventdata, handles)
+% hObject    handle to ToTimeFDPanel (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-set(handles.FDPanel,'position',get(handles.TDPanel,'position'));
-set(handles.TDPanel,'position',get(handles.FDPanel,'position'));
+set(handles.TDPanel,'position',handles.posTD);
+set(handles.FDPanel,'position',handles.posFD);
+guidata(hObject, handles);
+
+% --- Executes on button press in ToFreqTDPanel.
+function ToFreqTDPanel_Callback(hObject, eventdata, handles)
+% hObject    handle to ToFreqTDPanel (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+set(handles.FDPanel,'position',handles.posTD);
+set(handles.TDPanel,'position',handles.posFD);
+guidata(hObject, handles);
 
 % --------------------------------------------------------------------
 function TD_Callback(hObject, eventdata, handles)
@@ -191,8 +156,6 @@ function FD_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 % --- Executes on button press in Energy.
-
-
 
 
 % --------------------------------------------------------------------
@@ -219,5 +182,32 @@ function GENFFT_Callback(hObject, eventdata, handles)
 % --------------------------------------------------------------------
 function GenTimeOutput_Callback(hObject, eventdata, handles)
 % hObject    handle to GenTimeOutput (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in ToTimeEnergyPanel.
+function ToTimeEnergyPanel_Callback(hObject, eventdata, handles)
+% hObject    handle to ToTimeEnergyPanel (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% --- Executes on button press in ToFreqEnergyPanel.
+function ToFreqEnergyPanel_Callback(hObject, eventdata, handles)
+% hObject    handle to ToFreqEnergyPanel (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in ToEnergyFDPanel.
+function ToEnergyFDPanel_Callback(hObject, eventdata, handles)
+% hObject    handle to ToEnergyFDPanel (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in ToEnergyTDPanel.
+function ToEnergyTDPanel_Callback(hObject, eventdata, handles)
+% hObject    handle to ToEnergyTDPanel (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)

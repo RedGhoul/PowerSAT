@@ -22,7 +22,7 @@ function varargout = InputKeyPad(varargin)
 
 % Edit the above text to modify the response to help InputKeyPad
 
-% Last Modified by GUIDE v2.5 21-Nov-2016 01:16:13
+% Last Modified by GUIDE v2.5 21-Nov-2016 14:20:26
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -75,94 +75,55 @@ function varargout = InputKeyPad_OutputFcn(hObject, eventdata, handles)
 varargout{1} = handles.output;
 
 
-% --- Executes on button press in One.
 function One_Callback(hObject, eventdata, handles)
-% hObject    handle to One (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 PlotDigit(hObject, eventdata, handles, 1)
 
-% --- Executes on button press in Two.
 function Two_Callback(hObject, eventdata, handles)
-% hObject    handle to Two (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 PlotDigit(hObject, eventdata, handles, 2)
 
-% --- Executes on button press in Seven.
 function Seven_Callback(hObject, eventdata, handles)
-% hObject    handle to Seven (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 PlotDigit(hObject, eventdata, handles, 3)
 
-% --- Executes on button press in Four.
 function Four_Callback(hObject, eventdata, handles)
-% hObject    handle to Four (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 PlotDigit(hObject, eventdata, handles, 4)
 
-% --- Executes on button press in Five.
 function Five_Callback(hObject, eventdata, handles)
-% hObject    handle to Five (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 PlotDigit(hObject, eventdata, handles, 5)
 
-% --- Executes on button press in Eight.
 function Eight_Callback(hObject, eventdata, handles)
-% hObject    handle to Eight (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 PlotDigit(hObject, eventdata, handles, 6)
 
-% --- Executes on button press in Three.
 function Three_Callback(hObject, eventdata, handles)
-% hObject    handle to Three (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 PlotDigit(hObject, eventdata, handles, 7)
 
-% --- Executes on button press in Six.
 function Six_Callback(hObject, eventdata, handles)
-% hObject    handle to Six (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 PlotDigit(hObject, eventdata, handles, 8)
 
-% --- Executes on button press in Nine.
 function Nine_Callback(hObject, eventdata, handles)
-% hObject    handle to Nine (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 PlotDigit(hObject, eventdata, handles, 9)
 
-% --- Executes on button press in Zero.
 function Zero_Callback(hObject, eventdata, handles)
-% hObject    handle to Zero (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-% --- Executes on button press in Clear.
 PlotDigit(hObject, eventdata, handles, 9)
 
+% functionality Buttons
 function Clear_Callback(hObject, eventdata, handles)
-% hObject    handle to Clear (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 ClearPlot(hObject, eventdata, handles);
 
-% --- Executes on button press in WithNoise.
-function WithNoise_Callback(hObject, eventdata, handles)
-% hObject    handle to WithNoise (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+function AddNoise_Callback(hObject, eventdata, handles)
 ClearPlot(hObject, eventdata, handles);
 axes(handles.OutputChart);
-plot(handles.Xaxis,startNoise(handles.currentOutput,1));
+handles.currentOutput = startNoise(handles.currentOutput,1)
+plot(handles.Xaxis,handles.currentOutput);
 guidata(hObject, handles);
 
-% --- Executes on button press in ToTimeFDPanel.
+function InsertDelaybtn_Callback(hObject, eventdata, handles)
+ClearPlot(hObject, eventdata, handles);
+axes(handles.OutputChart);
+[handles.Xaxis,handles.currentOutput] = insertDelay(handles.currentOutput);
+plot(handles.Xaxis,handles.currentOutput);
+guidata(hObject, handles);
+
+% Transistion Buttons
 function ToTimeFDPanel_Callback(hObject, eventdata, handles)
 % hObject    handle to ToTimeFDPanel (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -193,8 +154,6 @@ function FD_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 % --- Executes on button press in Energy.
-
-
 
 
 % --------------------------------------------------------------------

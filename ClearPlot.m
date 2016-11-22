@@ -1,6 +1,8 @@
 function ClearPlot(hObject, eventdata, handles,TimeOrFreq)
-
-    if TimeOrFreq % for the basic time protions
+    % 1 for time
+    % 2 for Freq
+    if TimeOrFreq == 1 
+        % for the basic time protions
         axes(handles.OutputChart);
         handles.currentOutputTime = 0;
         plot(0,0);

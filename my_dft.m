@@ -11,23 +11,23 @@ function [OP] = my_dft(inputVec)
         OP(K) = temp;
         temp = 0;
     end
-     figure
-     subplot(3,1,1)
-     stem(plotLength,inputVec,'b')
-     title('Original Signal')
-     xlabel('n')
-     ylabel('Value')
-     hold on
-     subplot(3,1,2)
-     stem(plotLength,fliplr(abs(OP)))
-     title('Absolute Value')
-     xlabel('Frequency')
-     ylabel('|X(w)|')
-     hold on	
-     subplot(3,1,3)
-     stem(plotLength,fliplr(angle(OP)))
-     xlabel('Frequency')
-     ylabel('Phase')
-     title('Phase Response') 
-     hold on
+%      figure
+%      subplot(3,1,1)
+%      stem(plotLength,inputVec,'b')
+%      title('Original Signal')
+%      xlabel('n')
+%      ylabel('Value')
+%      hold on
+%      subplot(3,1,2)
+%      stem(plotLength,fliplr(abs(OP)))
+%      title('Absolute Value')
+%      xlabel('Frequency')
+%      ylabel('|X(w)|')
+%      hold on	
+%      subplot(3,1,3)
+%      stem(plotLength,fliplr(angle(OP)))
+%      xlabel('Frequency')
+%      ylabel('Phase')
+%      title('Phase Response') 
+%      hold on
 end

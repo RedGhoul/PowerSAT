@@ -22,7 +22,7 @@ function varargout = InputKeyPad(varargin)
 
 % Edit the above text to modify the response to help InputKeyPad
 
-% Last Modified by GUIDE v2.5 21-Nov-2016 18:17:46
+% Last Modified by GUIDE v2.5 21-Nov-2016 21:03:44
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -56,7 +56,8 @@ handles.posTD = get(handles.TDPanel,'position');
 handles.posEnergy = get(handles.EnergyPanel,'position');
 % Choose default command line output for InputKeyPad
 handles.output = hObject;
-handles.currentOutput = []; % for them empty vars
+handles.currentOutputTime = []
+handles.currentOutputFreq = []; % for them empty vars
 handles.Xaxis = [];
 % Update handles structure
 guidata(hObject, handles);
@@ -74,7 +75,6 @@ function varargout = InputKeyPad_OutputFcn(hObject, eventdata, handles)
 
 % Get default command line output from handles structure
 varargout{1} = handles.output;
-
 
 function One_Callback(hObject, eventdata, handles)
 PlotDigit(hObject, eventdata, handles, 1)
@@ -131,18 +131,27 @@ set(handles.TDPanel,'position',handles.posTD);
 set(handles.FDPanel,'position',handles.posFD);
 guidata(hObject, handles);
 
-% --- Executes on button press in ToFreqTDPanel.
 function ToFreqTDPanel_Callback(hObject, eventdata, handles)
 ClearPlot(hObject, eventdata, handles);
-axes(handles.FrequencyPlot);
+
     if not(isempty(handles.currentOutput))
         set(handles.FDPanel,'position',handles.posTD);
         set(handles.TDPanel,'position',handles.posFD);
+        
+        axes(handles.FreqPlotMag);
         handles.currentOutput = fft(handles.currentOutput);
-        stem(handles.Xaxis,handles.currentOutput);
+        plot(handles.Xaxis,abs(handles.currentOutput));
+        ylabel('Magnitude of Signal')
+        xlabel('Frequency')
+        
+        axes(handles.FreqPlotPhase);
+        plot(handles.Xaxis,angle(handles.currentOutput));
+        ylabel('Phase of Signal')
+        xlabel('Frequency')
     else 
         set(handles.ErrorTD,'Visible','On');
     end
+    
 guidata(hObject, handles);
 
 
@@ -237,3 +246,10 @@ function NoisePower_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+% --- Executes on button press in ViewAsFigure.
+function ViewAsFigure_Callback(hObject, eventdata, handles)
+% hObject    handle to ViewAsFigure (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)

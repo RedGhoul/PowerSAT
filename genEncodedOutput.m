@@ -3,7 +3,6 @@ function [sigLength,OP] = genEncodedOutput(F1,F2,F3)
     %The duration of each digit is 50 milliseconds, 
     %with 50 milliseconds silence between subsequent
     %digits.
-    
     sigLength = 1:50; % ???? WTF
     amp = rand() + 1; % amplitude For each tone, the amplitude is
              % different.

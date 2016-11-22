@@ -1,4 +1,4 @@
-function PlotDigit(hObject, eventdata, handles, digitNum)
+function plotDigitinTime(hObject, eventdata, handles, digitNum)
 axes(handles.OutputChart);
     switch digitNum
         case 1
@@ -24,13 +24,17 @@ axes(handles.OutputChart);
         otherwise
             [len,output] = genEncodedOutput(100,250,300);
     end 
+    
     isErrorOn  =  get(handles.ErrorTD,'Visible');
     if isErrorOn
         set(handles.ErrorTD,'Visible','Off');
     end 
-handles.currentOutput = randAmp(output);
+    
+handles.currentOutputTime = randAmp(output);
 handles.Xaxis = len;
 plot(len,output);
+ylabel('Discrete-Time Signal')
+xlabel('Time Index n')
 guidata(hObject, handles);
 
 

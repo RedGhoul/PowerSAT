@@ -22,7 +22,7 @@ function varargout = InputKeyPad(varargin)
 
 % Edit the above text to modify the response to help InputKeyPad
 
-% Last Modified by GUIDE v2.5 21-Nov-2016 22:05:47
+% Last Modified by GUIDE v2.5 21-Nov-2016 22:22:22
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -95,10 +95,10 @@ plotDigitinTime(hObject, eventdata, handles, 0)
 
 % functionality Buttons
 function Clear_Callback(hObject, eventdata, handles)
-ClearPlot(hObject, eventdata, handles,true);
+ClearPlot(hObject, eventdata, handles,1);
 
 function AddNoise_Callback(hObject, eventdata, handles)
-ClearPlot(hObject, eventdata, handles,true);
+ClearPlot(hObject, eventdata, handles,1);
 axes(handles.OutputChart);
 NoisePower = str2num(get(handles.NoisePower,'String'));
 handles.currentOutputTime = startNoise(handles.currentOutputTime,NoisePower);
@@ -106,7 +106,7 @@ plot(handles.XaxisTime,handles.currentOutputTime);
 guidata(hObject, handles);
 
 function InsertDelaybtn_Callback(hObject, eventdata, handles)
-ClearPlot(hObject, eventdata, handles,true);
+ClearPlot(hObject, eventdata, handles,1);
 axes(handles.OutputChart);
 [handles.XaxisTime,handles.currentOutputTime] = insertDelay(handles.currentOutputTime);
 plot(handles.XaxisTime,handles.currentOutputTime);
@@ -121,14 +121,15 @@ xlabel('Time Index n')
 
 % --- Executes on button press in ViewAsFigureFreq.
 function ViewAsFigureFreq_Callback(hObject, eventdata, handles)
-figure('Name','Freq Domain Magnitude Signal');
-plot(handles.XaxisTime,handles.currentOutputTime)
-ylabel('Discrete-Time Signal')
-xlabel('Time Index n')
-figure('Name','Freq Domain Phase Signal');
-plot(handles.XaxisTime,handles.currentOutputTime)
-ylabel('Discrete-Time Signal')
-xlabel('Time Index n')
+figure('Name','Freq Domain  - Magnitude Signal');
+plot(handles.XaxisTime,abs(handles.currentOutputFreq));
+ylabel('Amplitude')
+xlabel('Frequency')
+
+figure('Name','Freq Domain - Phase Signal');
+plot(handles.XaxisTime,angle(handles.currentOutputFreq));
+ylabel('Amplitude')
+xlabel('Frequency')
 
 % Transistion Buttons
 function ToTimeFDPanel_Callback(hObject, eventdata, handles)
@@ -137,28 +138,39 @@ set(handles.FDPanel,'position',handles.posFD);
 guidata(hObject, handles);
 
 function ToFreqTDPanel_Callback(hObject, eventdata, handles)
-ClearPlot(hObject, eventdata, handles);
-
-    if not(isempty(handles.currentOutput))
+    if not(isempty(handles.currentOutputTime))
         set(handles.FDPanel,'position',handles.posTD);
         set(handles.TDPanel,'position',handles.posFD);
         
         axes(handles.FreqPlotMag);
-        handles.currentOutput = fft(handles.currentOutput);
-        plot(handles.XaxisTime,abs(handles.currentOutput));
-        ylabel('Magnitude of Signal')
+        handles.currentOutputFreq = fft(handles.currentOutputTime);
+        plot(handles.XaxisTime,abs(handles.currentOutputFreq));
+        title('Magnitude of Signal')
+        ylabel('Amplitude')
         xlabel('Frequency')
         
         axes(handles.FreqPlotPhase);
-        plot(handles.XaxisTime,angle(handles.currentOutput));
-        ylabel('Phase of Signal')
+        plot(handles.XaxisTime,angle(handles.currentOutputFreq));
+        title('Phase of Signal')
+        ylabel('Amplitude')
         xlabel('Frequency')
     else 
         set(handles.ErrorTD,'Visible','On');
     end
     
-guidata(hObject, handles);
 
+
+% --- Executes on button press in ToEnergyFDPanel.
+function ToEnergyFDPanel_Callback(hObject, eventdata, handles)
+% calculate some shit
+set(handles.TDPanel,'position',handles.posTD);
+set(handles.FDPanel,'position',handles.posFD);
+axes(handles.FreqPlotMag);
+plot(0,0);
+title('Magnitude of Signal')
+ylabel('Amplitude')
+xlabel('Frequency')
+guidata(hObject, handles);
 
 % --------------------------------------------------------------------
 function TD_Callback(hObject, eventdata, handles)
@@ -216,11 +228,7 @@ function ToFreqEnergyPanel_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 
-% --- Executes on button press in ToEnergyFDPanel.
-function ToEnergyFDPanel_Callback(hObject, eventdata, handles)
-% hObject    handle to ToEnergyFDPanel (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+
 
 
 % --- Executes on button press in ToEnergyTDPanel.
@@ -251,6 +259,3 @@ function NoisePower_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
-
-
-

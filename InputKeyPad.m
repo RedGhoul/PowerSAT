@@ -22,7 +22,7 @@ function varargout = InputKeyPad(varargin)
 
 % Edit the above text to modify the response to help InputKeyPad
 
-% Last Modified by GUIDE v2.5 21-Nov-2016 22:22:22
+% Last Modified by GUIDE v2.5 22-Nov-2016 00:15:02
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -51,17 +51,18 @@ function InputKeyPad_OpeningFcn(hObject, eventdata, handles, varargin)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 % varargin   command line arguments to InputKeyPad (see VARARGIN)
-handles.posFD = get(handles.FDPanel,'position');
-handles.posTD = get(handles.TDPanel,'position');
-handles.posEnergy = get(handles.EnergyPanel,'position');
-% Choose default command line output for InputKeyPad
-handles.output = hObject;
+handles.Viewable1 = get(handles.TDPanel,'position');
+handles.Viewable2 = get(handles.FDPanel,'position');
+handles.Viewable3 = get(handles.EnergyPanel,'position');
 %some global arrays
 handles.currentOutputTime = []
-handles.currentOutputFreq = []; % for them empty vars
-handles.XaxisTime = [];
-handles.XaxisFreq = [];
-
+handles.currentOutputFreq = []
+handles.currentOutputEE = []% for them empty vars
+handles.XaxisTime = []
+handles.XaxisFreq = []
+handles.XaxisE = []
+% Choose default command line output for InputKeyPad
+handles.output = hObject;
 % Update handles structure
 guidata(hObject, handles);
 
@@ -118,31 +119,27 @@ figure('Name','Time Domain Signal');
 plot(handles.XaxisTime,handles.currentOutputTime)
 ylabel('Discrete-Time Signal')
 xlabel('Time Index n')
+guidata(hObject, handles);
 
 % --- Executes on button press in ViewAsFigureFreq.
 function ViewAsFigureFreq_Callback(hObject, eventdata, handles)
-figure('Name','Freq Domain  - Magnitude Signal');
-plot(handles.XaxisTime,abs(handles.currentOutputFreq));
-ylabel('Amplitude')
-xlabel('Frequency')
+    figure('Name','Freq Domain  - Magnitude Signal');
+    plot(1:length(handles.currentOutputFreq),abs(handles.currentOutputFreq));
+    ylabel('Amplitude')
+    xlabel('Frequency')
 
-figure('Name','Freq Domain - Phase Signal');
-plot(handles.XaxisTime,angle(handles.currentOutputFreq));
-ylabel('Amplitude')
-xlabel('Frequency')
-
-% Transistion Buttons
-function ToTimeFDPanel_Callback(hObject, eventdata, handles)
-set(handles.TDPanel,'position',handles.posTD);
-set(handles.FDPanel,'position',handles.posFD);
+    figure('Name','Freq Domain - Phase Signal');
+    plot(1:length(handles.currentOutputFreq),angle(handles.currentOutputFreq));
+    ylabel('Amplitude')
+    xlabel('Frequency')
 guidata(hObject, handles);
 
+% Transistion Buttons
+% from time to Freq
 function ToFreqTDPanel_Callback(hObject, eventdata, handles)
-ClearPlot(hObject, eventdata,handles, 2);
-
     if not(isempty(handles.currentOutputTime))
-        set(handles.FDPanel,'position',handles.posTD);
-        set(handles.TDPanel,'position',handles.posFD);
+        set(handles.FDPanel,'position',handles.Viewable1);
+        set(handles.TDPanel,'position',handles.Viewable2);
         
         axes(handles.FreqPlotMag);
         handles.currentOutputFreq = fft(handles.currentOutputTime);
@@ -159,9 +156,56 @@ ClearPlot(hObject, eventdata,handles, 2);
     else 
         set(handles.ErrorTD,'Visible','On');
     end
-    
 guidata(hObject, handles);
 
+%from Back to time from Freq
+function ToTimeFDPanel_Callback(hObject, eventdata, handles)
+set(handles.TDPanel,'position',handles.Viewable1);
+set(handles.FDPanel,'position',handles.Viewable2);
+guidata(hObject, handles);
+
+%from freq to Energy
+function ToEnergyFDPanel_Callback(hObject, eventdata, handles)
+% cal some stuff
+set(handles.EnergyPanel,'position',handles.Viewable1);
+set(handles.FDPanel,'position',handles.Viewable2);
+set(handles.TDPanel,'position',handles.Viewable3);
+axes(handles.EnergyPlot);
+plot(0,0);
+title('Magnitude of Signal')
+ylabel('Amplitude')
+xlabel('Frequency')
+guidata(hObject, handles);
+
+% from energy to time
+function ToTimeEnergyPanel_Callback(hObject, eventdata, handles)
+set(handles.TDPanel,'position',handles.Viewable1);
+set(handles.EnergyPanel,'position',handles.Viewable2);
+set(handles.FDPanel,'position',handles.Viewable3);
+guidata(hObject, handles);
+
+% from energy to freq
+function ToFreqEnergyPanel_Callback(hObject, eventdata, handles)
+set(handles.FDPanel,'position',handles.Viewable1);
+set(handles.EnergyPanel,'position',handles.Viewable2);
+set(handles.TDPanel,'position',handles.Viewable3);
+guidata(hObject, handles);
+
+%for the sub menu options
+% --------------------------------------------------------------------
+function GenTimeOutput_Callback(hObject, eventdata, handles)
+assignin('base', 'OutputTimeSignal',handles.currentOutputTime);
+guidata(hObject, handles);
+
+% --------------------------------------------------------------------
+function GenfftOutput_Callback(hObject, eventdata, handles)
+assignin('base', 'OutputFreqSignal',handles.currentOutputFreq);
+guidata(hObject, handles);
+
+% --------------------------------------------------------------------
+function GenEsigOutPut_Callback(hObject, eventdata, handles)
+assignin('base', 'OutputEnergySignal',handles.currentOutputEE);
+guidata(hObject, handles);
 
 % --------------------------------------------------------------------
 function TD_Callback(hObject, eventdata, handles)
@@ -177,13 +221,11 @@ function FD_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 % --- Executes on button press in Energy.
 
-
 % --------------------------------------------------------------------
 function File_Callback(hObject, eventdata, handles)
 % hObject    handle to File (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
 
 % --------------------------------------------------------------------
 function ToJpeg_Callback(hObject, eventdata, handles)
@@ -192,45 +234,6 @@ function ToJpeg_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 
-% --------------------------------------------------------------------
-function GENFFT_Callback(hObject, eventdata, handles)
-% hObject    handle to GENFFT (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
-% --------------------------------------------------------------------
-function GenTimeOutput_Callback(hObject, eventdata, handles)
-% hObject    handle to GenTimeOutput (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
-% --- Executes on button press in ToTimeEnergyPanel.
-function ToTimeEnergyPanel_Callback(hObject, eventdata, handles)
-% hObject    handle to ToTimeEnergyPanel (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% --- Executes on button press in ToFreqEnergyPanel.
-function ToFreqEnergyPanel_Callback(hObject, eventdata, handles)
-% hObject    handle to ToFreqEnergyPanel (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
-% --- Executes on button press in ToEnergyFDPanel.
-function ToEnergyFDPanel_Callback(hObject, eventdata, handles)
-% hObject    handle to ToEnergyFDPanel (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
-% --- Executes on button press in ToEnergyTDPanel.
-function ToEnergyTDPanel_Callback(hObject, eventdata, handles)
-% hObject    handle to ToEnergyTDPanel (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 
 
 
@@ -243,14 +246,11 @@ function NoisePower_Callback(hObject, eventdata, handles)
 %        str2double(get(hObject,'String')) returns contents of NoisePower as a double
 
 
-% --- Executes during object creation, after setting all properties.
-function NoisePower_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to NoisePower (see GCBO)
+% --------------------------------------------------------------------
+function Energy_Callback(hObject, eventdata, handles)
+% hObject    handle to Energy (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
+% handles    structure with handles and user data (see GUIDATA)
 
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
+
+

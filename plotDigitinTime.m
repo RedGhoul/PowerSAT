@@ -30,7 +30,7 @@ axes(handles.OutputChart);
         set(handles.ErrorTD,'Visible','Off');
     end 
     
-handles.currentOutputTime = randAmp(output);
+handles.currentOutputTime = output;
 handles.XaxisTime = len;
 plot(len,output);
 ylabel('Discrete-Time Signal')

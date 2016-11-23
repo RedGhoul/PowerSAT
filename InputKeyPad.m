@@ -101,8 +101,9 @@ ClearPlot(hObject, eventdata, handles,1);
 function AddNoise_Callback(hObject, eventdata, handles)
 ClearPlot(hObject, eventdata, handles,1);
 axes(handles.OutputChart);
-NoisePower = str2num(get(handles.NoisePower,'String'));
-handles.currentOutputTime = startNoise(handles.currentOutputTime,NoisePower);
+NoisePowerVal = str2num(get(handles.NoisePower,'String'));
+NoiseAlphaVal = str2num(get(handles.AlphaOfNoise,'String'));
+handles.currentOutputTime = startNoise(handles.currentOutputTime,NoisePowerVal, NoiseAlphaVal);
 plot(handles.XaxisTime,handles.currentOutputTime);
 guidata(hObject, handles);
 

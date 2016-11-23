@@ -33,6 +33,7 @@ axes(handles.OutputChart);
 handles.currentOutputTime = output;
 handles.XaxisTime = len;
 plot(len,output);
+title('Time Domain Signal')
 ylabel('Discrete-Time Signal')
 xlabel('Time Index n')
 guidata(hObject, handles);

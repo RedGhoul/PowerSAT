@@ -116,14 +116,13 @@ guidata(hObject, handles);
 % --- Executes on button press in ViewAsFigureTime.
 function ViewAsFigureTime_Callback(hObject, eventdata, handles)
     if not(isempty(handles.currentOutputTime))
-        if handles.currentOutputTime ~= 0 % this is just "!="
+        if handles.currentOutputTime == 0
             figure('Name','Time Domain Signal');
             plot(handles.XaxisTime,handles.currentOutputTime)
             ylabel('Discrete-Time Signal')
             xlabel('Time Index n')
         else
-            set(handles.ErrorTD,'Visible','On');
-        end
+            
     else
         set(handles.ErrorTD,'Visible','On');
     end     

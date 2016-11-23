@@ -22,7 +22,7 @@ function varargout = InputKeyPad(varargin)
 
 % Edit the above text to modify the response to help InputKeyPad
 
-% Last Modified by GUIDE v2.5 23-Nov-2016 04:13:41
+% Last Modified by GUIDE v2.5 23-Nov-2016 16:10:57
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -61,16 +61,18 @@ handles.currentOutputEE = []% for them empty vars
 handles.XaxisTime = []
 handles.XaxisFreq = []
 handles.XaxisE = []
+handles.CCS = 0
 % Choose default command line output for InputKeyPad
 handles.output = hObject;
 % Update handles structure
 guidata(hObject, handles);
 
-% UIWAIT makes InputKeyPad wait for user response (see UIRESUME)
-% uiwait(handles.figure1);
+% Setting the Global Options
+function CCS_Callback(hObject, eventdata, handles)
+CCSval = get(handles.CCS,'Visible');
+%if CCSva
+guidata(hObject, handles);
 
-
-% --- Outputs from this function are returned to the command line.
 function varargout = InputKeyPad_OutputFcn(hObject, eventdata, handles) 
 varargout{1} = handles.output;
 function One_Callback(hObject, eventdata, handles)
@@ -116,8 +118,9 @@ guidata(hObject, handles);
 
 % --- Executes on button press in ViewAsFigureTime.
 function ViewAsFigureTime_Callback(hObject, eventdata, handles)
-    if not(isempty(handles.currentOutputTime))
-        if handles.currentOutputTime ~= 0 % this is just "!="
+testVal = handles.currentOutputTime;
+    if isempty(testVal) == false
+        if testVal ~= 0 % this is just "!="
             figure('Name','Time Domain Signal');
             plot(handles.XaxisTime,handles.currentOutputTime)
             ylabel('Discrete-Time Signal')
@@ -326,6 +329,29 @@ function SecSigDelay_Callback(hObject, eventdata, handles)
 % --- Executes during object creation, after setting all properties.
 function SecSigDelay_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to SecSigDelay (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function EnterDur_Callback(hObject, eventdata, handles)
+% hObject    handle to EnterDur (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of EnterDur as text
+%        str2double(get(hObject,'String')) returns contents of EnterDur as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function EnterDur_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to EnterDur (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 

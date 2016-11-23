@@ -22,7 +22,7 @@ function varargout = InputKeyPad(varargin)
 
 % Edit the above text to modify the response to help InputKeyPad
 
-% Last Modified by GUIDE v2.5 23-Nov-2016 04:09:32
+% Last Modified by GUIDE v2.5 23-Nov-2016 04:13:41
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -282,18 +282,18 @@ function AddSignalbtn_Callback(hObject, eventdata, handles)
 
 
 
-function edit4_Callback(hObject, eventdata, handles)
-% hObject    handle to edit4 (see GCBO)
+function FirstSigDelay_Callback(hObject, eventdata, handles)
+% hObject    handle to FirstSigDelay (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of edit4 as text
-%        str2double(get(hObject,'String')) returns contents of edit4 as a double
+% Hints: get(hObject,'String') returns contents of FirstSigDelay as text
+%        str2double(get(hObject,'String')) returns contents of FirstSigDelay as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function edit4_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit4 (see GCBO)
+function FirstSigDelay_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to FirstSigDelay (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -305,18 +305,18 @@ end
 
 
 
-function edit5_Callback(hObject, eventdata, handles)
-% hObject    handle to edit5 (see GCBO)
+function SecSigDelay_Callback(hObject, eventdata, handles)
+% hObject    handle to SecSigDelay (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of edit5 as text
-%        str2double(get(hObject,'String')) returns contents of edit5 as a double
+% Hints: get(hObject,'String') returns contents of SecSigDelay as text
+%        str2double(get(hObject,'String')) returns contents of SecSigDelay as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function edit5_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit5 (see GCBO)
+function SecSigDelay_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to SecSigDelay (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 

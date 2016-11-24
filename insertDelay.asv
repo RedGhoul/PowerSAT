@@ -3,6 +3,6 @@ function [len,SigOutputArray] = insertDelay(SigInputArray,LengthOfDelay,Infront,
 delay = zeros(1,LengthOfDelay);
 if Infront == true
     SigOutputArray = horzcat(horzcat(delay, SigInputArray),delay);
-    len = 1:length(SigOutputArray);
+len = 1:length(SigOutputArray);
 end
 

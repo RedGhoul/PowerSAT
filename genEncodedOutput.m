@@ -1,5 +1,5 @@
-function [sigLength,OP] = genEncodedOutput(F1,F2,F3)
-    sigLength = 1:232;
+function [sigLength,OP] = genEncodedOutput(F1,F2,F3,duration)
+    sigLength = 1:duration;
     SigOne = [F1,F2,F3]; % Hz
     fs = 4651; % Sampling frequency
     Ts = 1/fs;
@@ -11,7 +11,7 @@ function [sigLength,OP] = genEncodedOutput(F1,F2,F3)
         amp = 0;
     end
     %OP = {sigLength,OutPut};% cell array
-    sigLength = sigLength;
+    sigLength = length(OutPut);
     OP = OutPut;% cell array
 %     figure 
 %     plot(sigLength,OP)

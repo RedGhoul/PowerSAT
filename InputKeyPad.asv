@@ -22,7 +22,7 @@ function varargout = InputKeyPad(varargin)
 
 % Edit the above text to modify the response to help InputKeyPad
 
-% Last Modified by GUIDE v2.5 23-Nov-2016 16:10:57
+% Last Modified by GUIDE v2.5 23-Nov-2016 18:14:28
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -61,60 +61,59 @@ handles.currentOutputEE = []% for them empty vars
 handles.XaxisTime = []
 handles.XaxisFreq = []
 handles.XaxisE = []
-handles.CCS = 0
+handles.CCSval = false;
 % Choose default command line output for InputKeyPad
 handles.output = hObject;
 % Update handles structure
 guidata(hObject, handles);
 
 % Setting the Global Options
-function CCS_Callback(hObject, eventdata, handles)
-CCSval = get(handles.CCS,'Visible');
-%if CCSva
+function CCSCB_Callback(hObject, eventdata, handles)
+CCSval = get(handles.CCSCB,'Value');
 guidata(hObject, handles);
 
 function varargout = InputKeyPad_OutputFcn(hObject, eventdata, handles) 
 varargout{1} = handles.output;
 
 function One_Callback(hObject, eventdata, handles)
-duration = get(handles.EnterDur,'Value');
-plotDigitinTime(hObject, eventdata, handles, 1,duration) % the change
+duration = str2num(get(handles.EnterDur,'String'));
+plotDigitinTime(hObject, eventdata, handles, 1,duration,handles.CCSval) % the change
 
 function Two_Callback(hObject, eventdata, handles)
-duration = get(handles.EnterDur,'Value');
-plotDigitinTime(hObject, eventdata, handles, 2,duration)
+duration = str2num(get(handles.EnterDur,'String'));
+plotDigitinTime(hObject, eventdata, handles, 2,duration,handles.CCSval)
 
 function Seven_Callback(hObject, eventdata, handles)
-duration = get(handles.EnterDur,'Value');
-plotDigitinTime(hObject, eventdata, handles, 3,duration)
+duration = str2num(get(handles.EnterDur,'String'));
+plotDigitinTime(hObject, eventdata, handles, 3,duration,handles.CCSval)
 
 function Four_Callback(hObject, eventdata, handles)
-duration = get(handles.EnterDur,'Value');
-plotDigitinTime(hObject, eventdata, handles, 4,duration)
+duration = str2num(get(handles.EnterDur,'String'));
+plotDigitinTime(hObject, eventdata, handles, 4,duration,handles.CCSval)
 
 function Five_Callback(hObject, eventdata, handles)
-duration = get(handles.EnterDur,'Value');
-plotDigitinTime(hObject, eventdata, handles, 5,duration)
+duration = str2num(get(handles.EnterDur,'String'));
+plotDigitinTime(hObject, eventdata, handles, 5,duration,handles.CCSval)
 
 function Eight_Callback(hObject, eventdata, handles)
-duration = get(handles.EnterDur,'Value');
-plotDigitinTime(hObject, eventdata, handles, 6,duration)
+duration = str2num(get(handles.EnterDur,'String'));
+plotDigitinTime(hObject, eventdata, handles, 6,duration,handles.CCSval)
 
 function Three_Callback(hObject, eventdata, handles)
-duration = get(handles.EnterDur,'Value');
-plotDigitinTime(hObject, eventdata, handles, 7,duration)
+duration = str2num(get(handles.EnterDur,'String'));
+plotDigitinTime(hObject, eventdata, handles, 7,duration,handles.CCSval)
 
 function Six_Callback(hObject, eventdata, handles)
-duration = get(handles.EnterDur,'Value');
-plotDigitinTime(hObject, eventdata, handles, 8,duration)
+duration = str2num(get(handles.EnterDur,'String'));
+plotDigitinTime(hObject, eventdata, handles, 8,duration,handles.CCSval)
 
 function Nine_Callback(hObject, eventdata, handles)
-duration = get(handles.EnterDur,'Value');
-plotDigitinTime(hObject, eventdata, handles, 9,duration)
+duration = str2num(get(handles.EnterDur,'String'));
+plotDigitinTime(hObject, eventdata, handles, 9,duration,handles.CCSval)
 
 function Zero_Callback(hObject, eventdata, handles)
-duration = get(handles.EnterDur,'Value');
-plotDigitinTime(hObject, eventdata, handles, 0,duration)
+duration = str2num(get(handles.EnterDur,'String'));
+plotDigitinTime(hObject, eventdata, handles, 0,duration,handles.CCSval)
 
 % functionality Buttons
 function Clear_Callback(hObject, eventdata, handles)
@@ -132,7 +131,10 @@ guidata(hObject, handles);
 function InsertDelaybtn_Callback(hObject, eventdata, handles)
 ClearPlot(hObject, eventdata, handles,1);
 axes(handles.OutputChart);
-[handles.XaxisTime,handles.currentOutputTime] = insertDelay(handles.currentOutputTime);
+%get some stuff
+Infront = get(handles.InFrontCB,'Value');
+LengthOfDelay = str2num(get(handles.FirstSigDelay,'String'));
+[handles.XaxisTime,handles.currentOutputTime] = insertDelay(handles.currentOutputTime,LengthOfDelay);
 plot(handles.XaxisTime,handles.currentOutputTime);
 guidata(hObject, handles);
 

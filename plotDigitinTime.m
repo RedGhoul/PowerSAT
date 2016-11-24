@@ -30,7 +30,7 @@ function plotDigitinTime(hObject, eventdata, handles, digitNum,duration,CCS)
         set(handles.ErrorTD,'Visible','Off');
     end 
     
-    if CCS == true
+    if CCS == 1
         % this is for when your concating it
         handles.currentOutputTime = horzcat(handles.currentOutputTime,output);
         handles.XaxisTime = horzcat(handles.XaxisTime,len);

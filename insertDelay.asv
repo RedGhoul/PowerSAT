@@ -1,8 +1,18 @@
 function [len,SigOutputArray] = insertDelay(SigInputArray,LengthOfDelay,Infront,InBack)
 %do we need any varition in the delays ?
-delay = zeros(1,LengthOfDelay);
-if Infront == true
-    SigOutputArray = horzcat(horzcat(delay, SigInputArray),delay);
-len = 1:length(SigOutputArray);
+    delay = zeros(1,LengthOfDelay);
+    outPut = SigInputArray;
+    length = [];
+    
+        if Infront == true
+            outPut = horzcat( outPut);
+            length = 1:length(outPut);
+        elseif InBack == true
+            outPut = horzcat(delay, outPut);
+            length = 1:length(outPut);
+        end
+        
+    len = length;
+    SigOutputArray = outPut;
 end
 

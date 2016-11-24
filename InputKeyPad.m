@@ -69,7 +69,7 @@ guidata(hObject, handles);
 
 % Setting the Global Options
 function CCSCB_Callback(hObject, eventdata, handles)
-CCSval = get(handles.CCSCB,'Value');
+handles.CCSval = get(handles.CCSCB,'Value');
 guidata(hObject, handles);
 
 function varargout = InputKeyPad_OutputFcn(hObject, eventdata, handles) 
@@ -131,16 +131,29 @@ guidata(hObject, handles);
 function InsertDelaybtn_Callback(hObject, eventdata, handles)
 ClearPlot(hObject, eventdata, handles,1);
 axes(handles.OutputChart);
+testVal = handles.currentOutputTime;
+    if isempty(testVal) == false
+        if (length(testVal) - 1) ~= 0 % this is just "!="
+            InFront = get(handles.InFrontCB,'Value');
+            InBack = get(handles.InBackCB,'Value');
+            LengthOfDelay = str2num(get(handles.FirstSigDelay,'String'));
+            [handles.XaxisTime,handles.currentOutputTime] = insertDelay(handles.currentOutputTime,LengthOfDelay,InFront,InBack);
+            plot(handles.XaxisTime,handles.currentOutputTime);
+        else
+            set(handles.ErrorTD,'Visible','On');
+        end
+    else
+        set(handles.ErrorTD,'Visible','On');
+    end     
 %get some stuff
-[handles.XaxisTime,handles.currentOutputTime] = insertDelay(handles.currentOutputTime);
-plot(handles.XaxisTime,handles.currentOutputTime);
+
 guidata(hObject, handles);
 
 % --- Executes on button press in ViewAsFigureTime.
 function ViewAsFigureTime_Callback(hObject, eventdata, handles)
 testVal = handles.currentOutputTime;
     if isempty(testVal) == false
-        if testVal ~= 0 % this is just "!="
+        if (length(testVal) - 1) ~= 0 % this is just "!="
             figure('Name','Time Domain Signal');
             plot(handles.XaxisTime,handles.currentOutputTime)
             ylabel('Discrete-Time Signal')

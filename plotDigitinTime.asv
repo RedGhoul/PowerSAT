@@ -29,12 +29,23 @@ function plotDigitinTime(hObject, eventdata, handles, digitNum,duration,CCS)
     if isErrorOn
         set(handles.ErrorTD,'Visible','Off');
     end 
-    if CCS == true
+    
+    if CCS == 1
+        % this is for when your concating it
+        
+        handles.currentOutputTime = horzcat(handles.currentOutputTime,output);
+        handles.XaxisTime = horzcat(handles.XaxisTime,len);
+    else 
         handles.currentOutputTime = output;
         handles.XaxisTime = len;
-    else 
-        
-    plot(1:length(output),output);
+    end
+    
+    if handles.XaxisTime == 1
+        stem(1:handles.XaxisTime,handles.currentOutputTime);
+    else
+        plot(1:handles.XaxisTime,handles.currentOutputTime);
+    end 
+    
     title('Time Domain Signal')
     ylabel('Discrete-Time Signal')
     xlabel('Time Index n')

@@ -125,7 +125,7 @@ axes(handles.OutputChart);
 NoisePowerVal = str2num(get(handles.NoisePower,'String'));
 NoiseAlphaVal = str2num(get(handles.AlphaOfNoise,'String'));
 handles.currentOutputTime = startNoise(handles.currentOutputTime,NoisePowerVal, NoiseAlphaVal);
-plot(handles.XaxisTime,handles.currentOutputTime);
+plot(1:length(handles.currentOutputTime),handles.currentOutputTime);
 guidata(hObject, handles);
 
 function InsertDelaybtn_Callback(hObject, eventdata, handles)
@@ -186,15 +186,17 @@ function ToFreqTDPanel_Callback(hObject, eventdata, handles)
         set(handles.FDPanel,'position',handles.Viewable1);
         set(handles.TDPanel,'position',handles.Viewable2);
         
+        % need to do what he does here for centering the two peaks
         axes(handles.FreqPlotMag);
         handles.currentOutputFreq = fft(handles.currentOutputTime);
-        plot(handles.XaxisTime,abs(handles.currentOutputFreq));
+        siglength = length(handles.currentOutputFreq);
+        plot(1:siglength,abs(handles.currentOutputFreq));
         title('Magnitude of Signal')
         ylabel('Amplitude')
         xlabel('Frequency')
         
         axes(handles.FreqPlotPhase);
-        plot(handles.XaxisTime,angle(handles.currentOutputFreq));
+        plot(1:siglength,angle(handles.currentOutputFreq));
         title('Phase of Signal')
         ylabel('Amplitude')
         xlabel('Frequency')
@@ -215,6 +217,7 @@ function ToEnergyFDPanel_Callback(hObject, eventdata, handles)
 set(handles.EnergyPanel,'position',handles.Viewable1);
 set(handles.FDPanel,'position',handles.Viewable2);
 set(handles.TDPanel,'position',handles.Viewable3);
+% got to do the magic over here for the sliding window
 axes(handles.EnergyPlot);
 plot(0,0);
 title('Magnitude of Signal')

@@ -42,7 +42,7 @@ function plotDigitinTime(hObject, eventdata, handles, digitNum,duration,CCS)
     if handles.XaxisTime == 1
         stem(1:handles.XaxisTime,handles.currentOutputTime);
     else
-        plot(1:handles.XaxisTime,handles.currentOutputTime);
+        plot(1:length(handles.currentOutputTime),handles.currentOutputTime);
     end 
     
     title('Time Domain Signal')

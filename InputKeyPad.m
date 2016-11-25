@@ -155,7 +155,7 @@ testVal = handles.currentOutputTime;
     if isempty(testVal) == false
         if (length(testVal) - 1) ~= 0 % this is just "!="
             figure('Name','Time Domain Signal');
-            plot(handles.XaxisTime,handles.currentOutputTime)
+            plot(1:length(handles.currentOutputTime),handles.currentOutputTime)
             ylabel('Discrete-Time Signal')
             xlabel('Time Index n')
         else

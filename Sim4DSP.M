@@ -49,6 +49,7 @@ ylabel('DFT Signal')
 xlabel('Frequency (Hz)')
 
 % where is your peak, when you graph it normally
+% this is your freqs bin , yes they are
 freq_index = freq/SamplingFreq*window_size+1;
 
 % this is the MAGIC !!!!!!

@@ -10,13 +10,11 @@ SamplingFreq = 4096; % Hz
 Ts = 1/SamplingFreq;
 signal_length = 1024;
 n_vec = [0:signal_length-1 ]; % signal indices
-k_vec = 0:1+length(n_vec)+400+4;
+k_vec = 1+n_vec
 window_size = 256 ; %128;
 
-x = amp * cos(2 * pi * freq * n_vec * Ts) + amp * cos(2 * pi * freq2 * n_vec * Ts) + amp * cos(2 * pi * freq3 * n_vec * Ts) ;
-rando = (4 * rand() + 1)^3
-x = horzcat(x + rando,zeros(1,400));
-plot(1:length(x), x); % here you are just ploting it in TIMe domain
+x = (amp * cos(2 * pi * freq * n_vec * Ts) )+ (amp * cos(2 * pi * freq2 * n_vec * Ts)) + (amp * cos(2 * pi * freq3 * n_vec * Ts)) ;
+plot(n_vec, x); % here you are just ploting it in TIMe domain
 ylabel('Discrete-Time Signal')
 xlabel('Time index n')
 
@@ -67,7 +65,6 @@ freq_index2 = round(freq2/SamplingFreq*window_size+1);
 Part1 = [zeros(1,150) x(1:300)]
 Part2 = [zeros(1,150) x(300:end)]
 x = [Part1, Part2]; % double sided zero padding
-energy1 = 0;
 % the shifting/ for loop here  is to compute the enrgy in each window. 
 % and then ploting it all
 for shift=0:num_shift-1;
@@ -83,13 +80,13 @@ for shift=0:num_shift-1;
     %plot(abs(Y)) the mans creating this thing on the fly 
     % your looking for your peak in each one ?
     energy1(shift+1) = abs(FristBin(freq_index1))^2; % we are trying to get the energy each time, we do the DFT shift window
-    energy2(shift+1) = abs(FristBin(freq_index2))^2;
+    %energy2(shift+1) = abs(FristBin(freq_index2))^2;
     % if you only put one you get the index in a vertical colunm
 
-    plot(energy2)
+    plot(energy1)
     pause(0.004)
 end
-title('sec sig at 200hz')
+title('sec sig at 128hz')
 % yeSS = hilbert(energy1);
 % env = abs(yeSS);
 % accc = tsmovavg(env,'s',4,2)

@@ -6,14 +6,14 @@ num_shift = 500;
 freq = 128; % Hz
 freq2 = 200; % Hz
 freq3 = 600; % Hz
-SamplingFreq = 4096; % Hz
+SamplingFreq = 12000; % Hz
 Ts = 1/SamplingFreq;
 signal_length = 1024;
 n_vec = [0:signal_length-1 ]; % signal indices
 k_vec = 1+n_vec
-window_size = 256 ; %128;
+window_size = 320; %128;
 
-x = (amp * cos(2 * pi * freq * n_vec * Ts) )+ (amp * cos(2 * pi * freq2 * n_vec * Ts)) + (amp * cos(2 * pi * freq3 * n_vec * Ts)) ;
+x = amp *((cos(2 * pi * freq * n_vec * Ts) ) + ( cos(2 * pi * freq2 * n_vec * Ts)) + ( cos(2 * pi * freq3 * n_vec * Ts)));
 plot(n_vec, x); % here you are just ploting it in TIMe domain
 ylabel('Discrete-Time Signal')
 xlabel('Time index n')
@@ -49,12 +49,13 @@ plot(freq_vec, abs(FFTOUT))  % you are ploting it in true Freq domain
 title('yolo life')
 ylabel('DFT Signal')
 xlabel('Frequency (Hz)')
-
-% where is your peak, when you graph it normally
+figure
+plot(1:length(FFTOUT),FFTOUT);
+% where is your peak, when you graph it normally 
 % this is your freqs bin your looking at
 % you want to the coeffinecnt that reps the freq
 % to get back to the time thing
-freq_index1 = freq/SamplingFreq*window_size+1;
+freq_index1 = round(freq/SamplingFreq*window_size+1);
 
 freq_index2 = round(freq2/SamplingFreq*window_size+1);
 % this is the MAGIC !!!!!!
@@ -68,13 +69,15 @@ Part2 = [zeros(1,150) x(300:end)]
 x = [Part1, Part2]; % double sided zero padding
 % the shifting/ for loop here  is to compute the enrgy in each window. 
 % and then ploting it all
+% should make our own hanning= 
+plot(x)
 for shift=0:num_shift-1;
     % only working with rows here
     Valueiny = x(shift+1:shift+window_size);
     % yup that is infact a windowing thing going on
     % shift starts from zero
     y(:, shift+1) = x(shift+1:shift+window_size); % you look at these much of the signal
-    valer = y(:, shift+1)
+    valer = y(:, shift+1);
     FristBin = fft(y(:, shift+1));% pretty much going down a colunm one by one
     % take the FFT of that window
     %figure
@@ -84,31 +87,32 @@ for shift=0:num_shift-1;
     %energy2(shift+1) = abs(FristBin(freq_index2))^2;
     % if you only put one you get the index in a vertical colunm
     plot(energy1)
-    %pause(0.004)
-end
-title('sec sig at 128hz')
-figure
-window_size = 400
-for shift=0:num_shift-1;
-    % only working with rows here
-    Valueiny2 = x(shift+1:shift+window_size);
-    % yup that is infact a windowing thing going on
-    % shift starts from zero
-    y2(:, shift+1) = x(shift+1:shift+window_size); % you look at these much of the signal
-    valer2 = y2(:, shift+1)
-    FristBin2 = fft(y2(:, shift+1));% pretty much going down a colunm one by one
-    % take the FFT of that window
-    %figure
-    %plot(abs(Y)) the mans creating this thing on the fly 
-    % your looking for your peak in each one ?
-    energy2(shift+1) = abs(FristBin2(freq_index2))^2; % we are trying to get the energy each time, we do the DFT shift window
-    %energy2(shift+1) = abs(FristBin(freq_index2))^2;
-    % if you only put one you get the index in a vertical colunm
-
-    plot(energy2)
     pause(0.004)
 end
-title('sec sig at 200hz')
+title('sec sig at 128hz')
+% figure
+% window_size = 400
+% num_shift = 400
+% for shift=0:num_shift-1;
+%     % only working with rows here
+%     Valueiny2 = x(shift+1:shift+window_size);
+%     % yup that is infact a windowing thing going on
+%     % shift starts from zero
+%     y2(:, shift+1) = x(shift+1:shift+window_size); % you look at these much of the signal
+%     valer2 = y2(:, shift+1);
+%     FristBin2 = fft(y2(:, shift+1));% pretty much going down a colunm one by one
+%     % take the FFT of that window
+%     %figure
+%     %plot(abs(Y)) the mans creating this thing on the fly 
+%     % your looking for your peak in each one ?
+%     energy2(shift+1) = abs(FristBin2(freq_index2))^2; % we are trying to get the energy each time, we do the DFT shift window
+%     %energy2(shift+1) = abs(FristBin(freq_index2))^2;
+%     % if you only put one you get the index in a vertical colunm
+% 
+%     plot(energy2)
+%     pause(0.004)
+% end
+% title('sec sig at 200hz')
 % yeSS = hilbert(energy1);
 % env = abs(yeSS);
 % accc = tsmovavg(env,'s',4,2)

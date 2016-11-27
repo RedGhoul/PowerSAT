@@ -188,21 +188,43 @@ function ToFreqTDPanel_Callback(hObject, eventdata, handles)
         
         % need to do what he does here for centering the two peaks
         axes(handles.FreqPlotMag);
+        
+        samplingFreq = 4651;
+        
+        sigLength = length(handles.currentOutputTime);
+        
+        posSection = [1:1:round(sigLength/2)]./(sigLength*samplingFreq);
+        
+        negSection = [-(round(sigLength/2)):1:-1]./(sigLength*samplingFreq);
+        
+        handles.XaxisFreq = [negSection,posSection];
+        
+        freqLength = length(handles.XaxisFreq);
+        
+        if freqLength > sigLength
+           difference =  freqlength - sigLength;
+           handles.XaxisFreq = horzcat(handles.XaxisFreq,zeros(1,difference));
+        elseif freqLength < sigLength
+           difference =  sigLength - freqlength;
+           handles.XaxisFreq = horzcat(handles.XaxisFreq,zeros(1,difference));
+        end 
+        
         handles.currentOutputFreq = fft(handles.currentOutputTime);
-        siglength = length(handles.currentOutputFreq);
-        plot(1:siglength,abs(handles.currentOutputFreq));
+        
+        plot(handles.XaxisFreq,abs(handles.currentOutputFreq));
         title('Magnitude of Signal')
         ylabel('Amplitude')
         xlabel('Frequency')
         
         axes(handles.FreqPlotPhase);
-        plot(1:siglength,angle(handles.currentOutputFreq));
+        plot(handles.XaxisFreq,angle(handles.currentOutputFreq));
         title('Phase of Signal')
         ylabel('Amplitude')
         xlabel('Frequency')
     else 
         set(handles.ErrorTD,'Visible','On');
     end
+    
 guidata(hObject, handles);
 
 %from Back to time from Freq

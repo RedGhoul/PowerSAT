@@ -2,18 +2,18 @@ close all
 clear all
 
 amp = 10; % amplitude
-num_shift = 500;
+num_shift = 250;
 freq = 150; % Hz
 freq2 = 200;
 freq3 = 300;
-fs = 4096; % Hz
+fs = 10096; %4096; % Hz
 Ts = 1/fs;
-signal_length = 4024; % need higher resulotuions to get the lower freqs
+signal_length = 1024; % need higher resulotuions to get the lower freqs
 n_vec = [0: signal_length-1]; % signal indices
 k_vec = 1+n_vec;
-window_size = 250 ; %128;
+window_size = 125 ; %128;
 
-x = (amp * cos(2 * pi * freq * n_vec * Ts)) %+ ((amp*2) * cos(2 * pi * freq2 * n_vec * Ts)) + ((amp*2.1) * cos(2 * pi * freq3 * n_vec * Ts)); 
+x = (amp * cos(2 * pi * freq * n_vec * Ts)) + ((amp*2) * cos(2 * pi * freq2 * n_vec * Ts)) + ((amp*2.1) * cos(2 * pi * freq3 * n_vec * Ts)); 
 
 plot(n_vec, x); % here you are just ploting it in TIMe domain
 ylabel('Discrete-Time Signal')
@@ -46,13 +46,14 @@ freq_index = round(freq/fs*window_size+1);
 % through the VEC
 
 % have to adjust the size of this thing to get proper output
-x = [zeros(1,150) x(1:300), zeros(1,150) x(300:end)]; % double sided zero padding
-
+x = [zeros(1,150) x(1:(353-151)), zeros(1,150)]; % double sided zero padding
+figure
+plot(x)
 % the shifting/ for loop here  is to compute the enrgy in each window. 
 % and then ploting it all
 for shift=0:num_shift-1;
-    
-    y(:, shift+1) = x(shift+1:shift+window_size);
+    tim = x(shift+1:shift+window_size);
+    y(:, shift+1) = tim;
     Y = fft(y(:, shift+1));
     %figure
     %plot(abs(Y))

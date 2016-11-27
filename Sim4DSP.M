@@ -55,12 +55,13 @@ xlabel('Frequency (Hz)')
 % you want to the coeffinecnt that reps the freq
 % to get back to the time thing
 freq_index1 = freq/SamplingFreq*window_size+1;
+
 freq_index2 = round(freq2/SamplingFreq*window_size+1);
 % this is the MAGIC !!!!!!
 %x = [zeros(1,200) x]; % zero padding
 % we have to put that X(300:end) in since the shift has to be able to go
 % through the VEC
-
+figure
 % zero padding the two ends
 Part1 = [zeros(1,150) x(1:300)]
 Part2 = [zeros(1,150) x(300:end)]
@@ -82,11 +83,32 @@ for shift=0:num_shift-1;
     energy1(shift+1) = abs(FristBin(freq_index1))^2; % we are trying to get the energy each time, we do the DFT shift window
     %energy2(shift+1) = abs(FristBin(freq_index2))^2;
     % if you only put one you get the index in a vertical colunm
-
     plot(energy1)
-    pause(0.004)
+    %pause(0.004)
 end
 title('sec sig at 128hz')
+figure
+window_size = 400
+for shift=0:num_shift-1;
+    % only working with rows here
+    Valueiny2 = x(shift+1:shift+window_size);
+    % yup that is infact a windowing thing going on
+    % shift starts from zero
+    y2(:, shift+1) = x(shift+1:shift+window_size); % you look at these much of the signal
+    valer2 = y2(:, shift+1)
+    FristBin2 = fft(y2(:, shift+1));% pretty much going down a colunm one by one
+    % take the FFT of that window
+    %figure
+    %plot(abs(Y)) the mans creating this thing on the fly 
+    % your looking for your peak in each one ?
+    energy2(shift+1) = abs(FristBin2(freq_index2))^2; % we are trying to get the energy each time, we do the DFT shift window
+    %energy2(shift+1) = abs(FristBin(freq_index2))^2;
+    % if you only put one you get the index in a vertical colunm
+
+    plot(energy2)
+    pause(0.004)
+end
+title('sec sig at 200hz')
 % yeSS = hilbert(energy1);
 % env = abs(yeSS);
 % accc = tsmovavg(env,'s',4,2)

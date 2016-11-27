@@ -2,13 +2,13 @@ close all
 clear all
 
 amp = rand() + 1; % amplitude
-num_shift = 500 * 2;
+num_shift = 500;
 Freq1 = 150; % Hz
 Freq2 = 200; % Hz
 Freq3 = 300; % Hz
 SamplingFreq = 2*Freq3; %4096; % Hz
 Ts = 1/SamplingFreq;
-signal_length = 1024 * 2;
+signal_length = 1024;
 n_vec = [0: signal_length-1]; % signal indices
 k_vec = 1+n_vec;
 window_size = 256 ; %128;
@@ -45,9 +45,7 @@ freq_indexOne = round(Freq1/SamplingFreq*window_size+1);
 % we have to put that X(300:end) in since the shift has to be able to go
 % through the VEC
 TimeSignal = [zeros(1,150) TimeSignal(1:300), zeros(1,150) TimeSignal(300:end)]; % double sided zero padding
-figure 
-plot(TimeSignal)
-title('time sig with the delays')
+
 % the shifting/ for loop here  is to compute the enrgy in each window. 
 % and then ploting it all
 for shift=0:num_shift-1;
@@ -85,7 +83,7 @@ title('Freq at 200hz');
 
 
 
-freq_indexThree = round(Freq3/SamplingFreq*window_size+1);
+freq_indexThree = round(Freq2/SamplingFreq*window_size+1);
 
 % the shifting/ for loop here  is to compute the enrgy in each window. 
 % and then ploting it all
@@ -101,4 +99,4 @@ end
 
 figure
 plot(energySigThree)
-title('Freq at 300hz');
+title('Freq at 200hz');

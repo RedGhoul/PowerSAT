@@ -41,7 +41,7 @@ xlabel('Frequency (Hz)')
 
 %x = [zeros(1,200) x]; % zero padding
 % we have to put that X(300:end) in since the shift has to be able to go
-% through the VEC
+% through the VEC 2449
 TimeSignal = [zeros(1,150) TimeSignal(1:400), zeros(1,150) TimeSignal(300:end)]; % double sided zero padding
 freq_index = round(freq(1)/fs*window_size+1);
 figure 
@@ -73,7 +73,7 @@ end
 figure
 plot(energy2)
 
-freq_index3 = round(freq(3)/fs*window_size+1);
+freq_index3 = 256;%round(freq(3)/fs*window_size+1);
 % the shifting/ for loop here  is to compute the enrgy in each window. 
 % and then ploting it all
 for shift=0:num_shift-1;

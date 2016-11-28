@@ -22,7 +22,7 @@ function varargout = InputKeyPad(varargin)
 
 % Edit the above text to modify the response to help InputKeyPad
 
-% Last Modified by GUIDE v2.5 23-Nov-2016 18:14:28
+% Last Modified by GUIDE v2.5 27-Nov-2016 23:46:45
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -118,15 +118,16 @@ plotDigitinTime(hObject, eventdata, handles, 0,duration,handles.CCSval)
 
 % functionality Buttons
 function Clear_Callback(hObject, eventdata, handles)
-ClearPlot(hObject, eventdata, handles,1);
+    ClearPlot(hObject, eventdata, handles,1);
+guidata(hObject, handles);
 
 function AddNoise_Callback(hObject, eventdata, handles)
-ClearPlot(hObject, eventdata, handles,1);
-axes(handles.OutputChart);
-NoisePowerVal = str2num(get(handles.NoisePower,'String'));
-NoiseAlphaVal = str2num(get(handles.AlphaOfNoise,'String'));
-handles.currentOutputTime = startNoise(handles.currentOutputTime,NoisePowerVal, NoiseAlphaVal);
-plot(1:length(handles.currentOutputTime),handles.currentOutputTime);
+    ClearPlot(hObject, eventdata, handles,1);
+    axes(handles.OutputChart);
+    NoisePowerVal = str2num(get(handles.NoisePower,'String'));
+    NoiseAlphaVal = str2num(get(handles.AlphaOfNoise,'String'));
+    handles.currentOutputTime = startNoise(handles.currentOutputTime,NoisePowerVal, NoiseAlphaVal);
+    plot(1:length(handles.currentOutputTime),handles.currentOutputTime);
 guidata(hObject, handles);
 
 function InsertDelaybtn_Callback(hObject, eventdata, handles)
@@ -168,6 +169,7 @@ guidata(hObject, handles);
 % --- Executes on button press in ViewAsFigureFreq.
 function ViewAsFigureFreq_Callback(hObject, eventdata, handles)
     figure('Name','Freq Domain  - Magnitude Signal');
+    freqAxe = handles.XaxisFreq;
     plot(handles.XaxisFreq,abs(handles.currentOutputFreq));
     ylabel('Amplitude')
     xlabel('Frequency')
@@ -185,7 +187,8 @@ function ToFreqTDPanel_Callback(hObject, eventdata, handles)
     if not(isempty(handles.currentOutputTime))
         set(handles.FDPanel,'position',handles.Viewable1);
         set(handles.TDPanel,'position',handles.Viewable2);
-        plotDigitinFreq(hObject, eventdata, handles,handles.samplingFreq)
+        [handles.XaxisFreq,handles.currentOutputFreq] = plotDigitinFreq(hObject, eventdata, handles,handles.samplingFreq)
+        
     else 
         set(handles.ErrorTD,'Visible','On');
     end
@@ -193,36 +196,38 @@ guidata(hObject, handles);
 
 %from Back to time from Freq
 function ToTimeFDPanel_Callback(hObject, eventdata, handles)
-set(handles.TDPanel,'position',handles.Viewable1);
-set(handles.FDPanel,'position',handles.Viewable2);
+    set(handles.TDPanel,'position',handles.Viewable1);
+    set(handles.FDPanel,'position',handles.Viewable2);
 guidata(hObject, handles);
 
 %from freq to Energy
 function ToEnergyFDPanel_Callback(hObject, eventdata, handles)
 % cal some stuff
-set(handles.EnergyPanel,'position',handles.Viewable1);
-set(handles.FDPanel,'position',handles.Viewable2);
-set(handles.TDPanel,'position',handles.Viewable3);
-% got to do the magic over here for the sliding window
-axes(handles.EnergyPlot);
-plot(0,0);
-title('Magnitude of Signal')
-ylabel('Amplitude')
-xlabel('Frequency')
+    set(handles.EnergyPanel,'position',handles.Viewable1);
+    set(handles.FDPanel,'position',handles.Viewable2);
+    set(handles.TDPanel,'position',handles.Viewable3);
+    % got to do the magic over here for the sliding window
+    axes(handles.EnergyPlot);
+    plotSignalinEnergy(hObject, eventdata, handles)
+    plot(0,0);
+    title('Magnitude of Signal')
+    ylabel('Amplitude')
+    xlabel('Frequency')
 guidata(hObject, handles);
 
 % from energy to time
 function ToTimeEnergyPanel_Callback(hObject, eventdata, handles)
-set(handles.TDPanel,'position',handles.Viewable1);
-set(handles.EnergyPanel,'position',handles.Viewable2);
-set(handles.FDPanel,'position',handles.Viewable3);
+    set(handles.TDPanel,'position',handles.Viewable1);
+    set(handles.EnergyPanel,'position',handles.Viewable2);
+    set(handles.FDPanel,'position',handles.Viewable3);
+    
 guidata(hObject, handles);
 
 % from energy to freq
 function ToFreqEnergyPanel_Callback(hObject, eventdata, handles)
-set(handles.FDPanel,'position',handles.Viewable1);
-set(handles.EnergyPanel,'position',handles.Viewable2);
-set(handles.TDPanel,'position',handles.Viewable3);
+    set(handles.FDPanel,'position',handles.Viewable1);
+    set(handles.EnergyPanel,'position',handles.Viewable2);
+    set(handles.TDPanel,'position',handles.Viewable3);
 guidata(hObject, handles);
 
 %for the sub menu options
@@ -382,3 +387,10 @@ function EnterDur_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+% --- Executes on button press in pushbutton32.
+function pushbutton32_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton32 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)

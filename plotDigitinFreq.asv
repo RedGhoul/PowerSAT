@@ -1,6 +1,9 @@
-function [lenFreq,SigFreq] = plotDigitinFreq(hObject, eventdata, handles,samplingFreq)
+function [lenFreq,SigFreq] = plotSignalinFreq(hObject, eventdata, handles,samplingFreq)
 %PLOTSIGNALINFREQ Summary of this function goes here
 %   Detailed explanation goes here
+     
+        axes(handles.FreqPlotMag);
+        
         sigLength = length(handles.currentOutputTime);
         currentTimeSig = handles.currentOutputTime;
         XaxeFreq =  handles.XaxisFreq;
@@ -9,9 +12,9 @@ function [lenFreq,SigFreq] = plotDigitinFreq(hObject, eventdata, handles,samplin
         
         negSection = [-(round(sigLength/2)):1:-1]./(sigLength*samplingFreq);
         
-        XaxeFreq = [negSection,posSection];
+        XaxisFreqs = [negSection,posSection];
         
-        freqLength = length(XaxeFreq);
+        freqLength = length(XaxisFreqs);
         
         if freqLength > sigLength
            difference =  freqLength - sigLength;
@@ -22,21 +25,18 @@ function [lenFreq,SigFreq] = plotDigitinFreq(hObject, eventdata, handles,samplin
         end 
         
         currentOutputFreq = fft(currentTimeSig);
-        
-        axes(handles.FreqPlotMag);
-        plot(XaxeFreq,abs(currentOutputFreq));
+        plot(handles.XaxisFreq,abs(handles.currentOutputFreq));
         title('Magnitude of Signal')
         ylabel('Amplitude')
         xlabel('Frequency')
         
         axes(handles.FreqPlotPhase);
-        plot(XaxeFreq,angle(currentOutputFreq));
+        plot(handles.XaxisFreq,angle(handles.currentOutputFreq));
         title('Phase of Signal')
         ylabel('Amplitude')
         xlabel('Frequency')
         
-        %outputs
-        lenFreq = XaxeFreq;
-        SigFreq = currentOutputFreq;
+        lenFreq = [negSection,posSection];
+        SigFreq = handles.currentOutputFreq;
 end
 

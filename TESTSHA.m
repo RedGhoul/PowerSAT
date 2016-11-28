@@ -49,15 +49,12 @@ plot(TimeSignal)
 % the shifting/ for loop here  is to compute the enrgy in each window. 
 % and then ploting it all
 for shift=0:num_shift-1;
-    
     y(:, shift+1) = TimeSignal(shift+1:shift+window_size);
     Y = fft(y(:, shift+1));
     %figure
     %plot(abs(Y))
-    energy(shift+1) = abs(Y(freq_index))^2; % we are trying to get the energy each time, we do the DFT shift window
-    
+    energy(shift+1) = abs(Y(freq_index))^2; % we are trying to get the energy each time, we do the DFT shift window    
 end
-
 figure
 plot(energy)
 
@@ -73,7 +70,6 @@ for shift=0:num_shift-1;
     energy2(shift+1) = abs(Y2(freq_index2))^2; % we are trying to get the energy each time, we do the DFT shift window
     
 end
-
 figure
 plot(energy2)
 
@@ -81,14 +77,11 @@ freq_index3 = round(freq(3)/fs*window_size+1);
 % the shifting/ for loop here  is to compute the enrgy in each window. 
 % and then ploting it all
 for shift=0:num_shift-1;
-    
     y3(:, shift+1) = TimeSignal(shift+1:shift+window_size);
     Y3 = fft(y3(:, shift+1));
     %figure
     %plot(abs(Y))
     energy3(shift+1) = abs(Y3(freq_index3))^2; % we are trying to get the energy each time, we do the DFT shift window
-    
 end
-
 figure
 plot(energy3)

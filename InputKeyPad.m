@@ -129,41 +129,39 @@ plot(1:length(handles.currentOutputTime),handles.currentOutputTime);
 guidata(hObject, handles);
 
 function InsertDelaybtn_Callback(hObject, eventdata, handles)
-ClearPlot(hObject, eventdata, handles,1);
-axes(handles.OutputChart);
-testVal = handles.currentOutputTime;
-    if isempty(testVal) == false
-        if (length(testVal) - 1) ~= 0 % this is just "!="
-            InFront = get(handles.InFrontCB,'Value');
-            InBack = get(handles.InBackCB,'Value');
-            LengthOfDelay = str2num(get(handles.FirstSigDelay,'String'));
-            [handles.XaxisTime,handles.currentOutputTime] = insertDelay(handles.currentOutputTime,LengthOfDelay,InFront,InBack);
-            plot(handles.XaxisTime,handles.currentOutputTime);
+    ClearPlot(hObject, eventdata, handles,1);
+    axes(handles.OutputChart);
+    testVal = handles.currentOutputTime;
+        if isempty(testVal) == false
+            if (length(testVal) - 1) ~= 0 % this is just "!="
+                InFront = get(handles.InFrontCB,'Value');
+                InBack = get(handles.InBackCB,'Value');
+                LengthOfDelay = str2num(get(handles.FirstSigDelay,'String'));
+                [handles.XaxisTime,handles.currentOutputTime] = insertDelay(handles.currentOutputTime,LengthOfDelay,InFront,InBack);
+                plot(handles.XaxisTime,handles.currentOutputTime);
+            else
+                set(handles.ErrorTD,'Visible','On');
+            end
         else
             set(handles.ErrorTD,'Visible','On');
-        end
-    else
-        set(handles.ErrorTD,'Visible','On');
-    end     
-%get some stuff
-
+        end     
 guidata(hObject, handles);
 
 % --- Executes on button press in ViewAsFigureTime.
 function ViewAsFigureTime_Callback(hObject, eventdata, handles)
-testVal = handles.currentOutputTime;
-    if isempty(testVal) == false
-        if (length(testVal) - 1) ~= 0 % this is just "!="
-            figure('Name','Time Domain Signal');
-            plot(1:length(handles.currentOutputTime),handles.currentOutputTime)
-            ylabel('Discrete-Time Signal')
-            xlabel('Time Index n')
+    testVal = handles.currentOutputTime;
+        if isempty(testVal) == false
+            if (length(testVal) - 1) ~= 0 % this is just "!="
+                figure('Name','Time Domain Signal');
+                plot(1:length(handles.currentOutputTime),handles.currentOutputTime)
+                ylabel('Discrete-Time Signal')
+                xlabel('Time Index n')
+            else
+                set(handles.ErrorTD,'Visible','On');
+            end
         else
             set(handles.ErrorTD,'Visible','On');
-        end
-    else
-        set(handles.ErrorTD,'Visible','On');
-    end     
+        end     
 guidata(hObject, handles);
 
 % --- Executes on button press in ViewAsFigureFreq.
@@ -185,42 +183,7 @@ function ToFreqTDPanel_Callback(hObject, eventdata, handles)
     if not(isempty(handles.currentOutputTime))
         set(handles.FDPanel,'position',handles.Viewable1);
         set(handles.TDPanel,'position',handles.Viewable2);
-        
-        % need to do what he does here for centering the two peaks
-        axes(handles.FreqPlotMag);
-        
-        samplingFreq = 4651;
-        
-        sigLength = length(handles.currentOutputTime);
-        
-        posSection = [1:1:round(sigLength/2)]./(sigLength*samplingFreq);
-        
-        negSection = [-(round(sigLength/2)):1:-1]./(sigLength*samplingFreq);
-        
-        handles.XaxisFreq = [negSection,posSection];
-        
-        freqLength = length(handles.XaxisFreq);
-        
-        if freqLength > sigLength
-           difference =  freqlength - sigLength;
-           handles.XaxisFreq = horzcat(handles.XaxisFreq,zeros(1,difference));
-        elseif freqLength < sigLength
-           difference =  sigLength - freqlength;
-           handles.XaxisFreq = horzcat(handles.XaxisFreq,zeros(1,difference));
-        end 
-        
-        handles.currentOutputFreq = fft(handles.currentOutputTime);
-        
-        plot(handles.XaxisFreq,abs(handles.currentOutputFreq));
-        title('Magnitude of Signal')
-        ylabel('Amplitude')
-        xlabel('Frequency')
-        
-        axes(handles.FreqPlotPhase);
-        plot(handles.XaxisFreq,angle(handles.currentOutputFreq));
-        title('Phase of Signal')
-        ylabel('Amplitude')
-        xlabel('Frequency')
+        plotSignalinFreq(hObject, eventdata, handles,samplingFreq)
     else 
         set(handles.ErrorTD,'Visible','On');
     end

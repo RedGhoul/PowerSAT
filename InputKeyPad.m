@@ -61,7 +61,8 @@ handles.currentOutputEE = []% for them empty vars
 handles.XaxisTime = []
 handles.XaxisFreq = []
 handles.XaxisE = []
-handles.CCSval = false;
+handles.samplingFreq = 400*4 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+handles.CCSval = false; % value for concatnating it or not
 % Choose default command line output for InputKeyPad
 handles.output = hObject;
 % Update handles structure
@@ -167,27 +168,27 @@ guidata(hObject, handles);
 % --- Executes on button press in ViewAsFigureFreq.
 function ViewAsFigureFreq_Callback(hObject, eventdata, handles)
     figure('Name','Freq Domain  - Magnitude Signal');
-    plot(1:length(handles.currentOutputFreq),abs(handles.currentOutputFreq));
+    plot(handles.XaxisFreq,abs(handles.currentOutputFreq));
     ylabel('Amplitude')
     xlabel('Frequency')
 
     figure('Name','Freq Domain - Phase Signal');
-    plot(1:length(handles.currentOutputFreq),angle(handles.currentOutputFreq));
+    plot(handles.XaxisFreq,angle(handles.currentOutputFreq));
     ylabel('Amplitude')
     xlabel('Frequency')
 guidata(hObject, handles);
 
 % Transistion Buttons
+
 % from time to Freq
 function ToFreqTDPanel_Callback(hObject, eventdata, handles)
     if not(isempty(handles.currentOutputTime))
         set(handles.FDPanel,'position',handles.Viewable1);
         set(handles.TDPanel,'position',handles.Viewable2);
-        plotSignalinFreq(hObject, eventdata, handles,samplingFreq)
+        plotDigitinFreq(hObject, eventdata, handles,handles.samplingFreq)
     else 
         set(handles.ErrorTD,'Visible','On');
     end
-    
 guidata(hObject, handles);
 
 %from Back to time from Freq

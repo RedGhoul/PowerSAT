@@ -15,13 +15,14 @@ function [] = plotSignalinFreq(hObject, eventdata, handles,samplingFreq)
         freqLength = length(handles.XaxisFreq);
         
         if freqLength > sigLength
-           difference =  freqlength - sigLength;
-           handles.XaxisFreq = horzcat(handles.XaxisFreq,zeros(1,difference));
+           difference =  freqLength - sigLength;
+           handles.currentOutputTime = horzcat(handles.currentOutputTime,zeros(1,difference));
         elseif freqLength < sigLength
-           difference =  sigLength - freqlength;
+           difference =  sigLength - freqLength;
            handles.XaxisFreq = horzcat(handles.XaxisFreq,zeros(1,difference));
         end 
-
+        
+        handles.currentOutputFreq = fft(handles.currentOutputTime);
         plot(handles.XaxisFreq,abs(handles.currentOutputFreq));
         title('Magnitude of Signal')
         ylabel('Amplitude')

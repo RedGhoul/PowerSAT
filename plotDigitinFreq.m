@@ -5,13 +5,18 @@ function [lenFreq,SigFreq] = plotDigitinFreq(hObject, eventdata, handles,samplin
         currentTimeSig = handles.currentOutputTime;
         XaxeFreq =  handles.XaxisFreq;
         
-        posSection = [1:1:round(sigLength/2)]./(sigLength*samplingFreq);
-        
-        negSection = [-(round(sigLength/2)):1:-1]./(sigLength*samplingFreq);
-        
-        XaxeFreq = [negSection,posSection];
+        freq_vec = [0:round(sigLength/2)-1]./(sigLength*samplingFreq);
+
+        freq_vec = [ [-round(sigLength/2):1:-1]./(sigLength*samplingFreq), freq_vec];
+%         posSection = [1:1:round(sigLength/2)]./(sigLength*samplingFreq);
+%         
+%         negSection = [-(round(sigLength/2)):1:-1]./(sigLength*samplingFreq);
+%         
+        XaxeFreq = freq_vec;%[negSection,posSection];
         
         freqLength = length(XaxeFreq);
+        
+       
         
         if freqLength > sigLength
            difference =  freqLength - sigLength;
@@ -21,7 +26,11 @@ function [lenFreq,SigFreq] = plotDigitinFreq(hObject, eventdata, handles,samplin
            XaxeFreq = horzcat(XaxeFreq,zeros(1,difference));
         end 
         
-        currentOutputFreq = fft(currentTimeSig);
+        TempFFT = fft(currentTimeSig);
+        
+        half_k_vec = round(length(TempFFT)/2)+1:1:length(TempFFT);
+        
+        currentOutputFreq = [TempFFT(half_k_vec),TempFFT(1:round(length(TempFFT)/2))];
         
         axes(handles.FreqPlotMag);
         plot(XaxeFreq,abs(currentOutputFreq));

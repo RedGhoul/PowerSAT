@@ -1,4 +1,4 @@
-function [sigLen,WindowSize,numberOfWindows,binNumber,outPutEnergySig] = computeEnergySig(incomingTimeSignal,samplingFreq)
+function [sigLen,WindowSize,numberofWindows,binNumber,outPutEnergySig] = computeEnergySig(incomingTimeSignal,samplingFreq)
 %COMPUTEENERGYSIG Summary of this function goes here
 %   Detailed explanation goes here
 % need to make this dynamic
@@ -19,7 +19,7 @@ function [sigLen,WindowSize,numberOfWindows,binNumber,outPutEnergySig] = compute
     %outputs
     sigLen = sigLength
     WindowSize = windowSize
-    numberOfWindows = numberOfWindows
+    numberofWindows = numberOfWindows
     binNumber = binNumber
     outPutEnergySig = outPutEnergySig
 end

@@ -42,7 +42,7 @@ xlabel('Frequency (Hz)')
 %x = [zeros(1,200) x]; % zero padding
 % we have to put that X(300:end) in since the shift has to be able to go
 % through the VEC 2449
-TimeSignal = [zeros(1,150) TimeSignal(1:555), zeros(1,150) TimeSignal(555:end)]; % double sided zero padding
+TimeSignal = [zeros(1,150) TimeSignal(1:555), zeros(1,150) TimeSignal(700:end)]; % double sided zero padding
 hanwin = length(TimeSignal);
 freq_index = round(freq(1)/fs*window_size+1);
 figure 

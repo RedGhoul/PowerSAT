@@ -196,12 +196,12 @@ guidata(hObject, handles);
 % from time to Freq
 function ToFreqTDPanel_Callback(hObject, eventdata, handles)
     if not(isempty(handles.currentOutputTime))
-        
+        handles.Viewable3 = get(handles.EnergyPanel,'position');
+handles.Viewable4 = get(handles.DetectorWindow,'position');
         set(handles.FDPanel,'position',handles.Viewable1);
         set(handles.TDPanel,'position',handles.Viewable2);
         set(handles.EnergyPanel,'position',handles.Viewable3);
-        set(handles.DetectorWindow,'position',handles.Viewable4);
-        
+        set(handles.
         [handles.XaxisFreq,handles.currentOutputFreq] = plotDigitinFreq(hObject, eventdata, handles,handles.samplingFreq)
     else 
         set(handles.ErrorTD,'Visible','On');

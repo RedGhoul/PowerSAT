@@ -333,7 +333,7 @@ function ToEnergyDectetor_Callback(hObject, eventdata, handles)
 guidata(hObject, handles);
 
 
-%for the sub menu options
+%for the sub menu options - Outputs the data to the workspace
 % --------------------------------------------------------------------
 function GenTimeOutput_Callback(hObject, eventdata, handles)
 assignin('base', 'OutputTimeSignal',handles.currentOutputTime);
@@ -348,6 +348,9 @@ guidata(hObject, handles);
 function GenEsigOutPut_Callback(hObject, eventdata, handles)
 assignin('base', 'OutputEnergySignal',handles.currentOutputEE);
 guidata(hObject, handles);
+
+
+
 
 % --------------------------------------------------------------------
 function TD_Callback(hObject, eventdata, handles)

@@ -1,11 +1,22 @@
-function [sigLen,WindowSize,numberOfWindows,binNumber,outPutEnergySig] = computeEnergySig(incomingTimeSignal,samplingFreq)
+function [sigLen,WindowSize,numberOfWindows,binNumber,outPutEnergySig] = computeEnergySig(incomingTimeSignal,samplingFreq,freqBinNumber,numberofWindows,windowSize)
 %COMPUTEENERGYSIG Summary of this function goes here
 %   Detailed explanation goes here
 % need to make this dynamic
+%~exist('param3','var')
     sigLength = length(incomingTimeSignal);
-    windowSize = round(sigLength/6);
-    numberOfWindows = sigLength-windowSize;
-    binNumber = round(400/samplingFreq*windowSize+1);
+    
+    if ~exist('windowSize','var')
+        windowSize = round(sigLength/6);
+    end
+    
+    if ~exist('numberofWindows','var')
+        numberOfWindows = sigLength-windowSize;
+    end 
+    
+    if ~exist('freqBinNumber','var')
+        binNumber = round(400/samplingFreq*windowSize+1);
+    end 
+    
     hamWindow = hamming(windowSize);
     outPutEnergySig = [];
     

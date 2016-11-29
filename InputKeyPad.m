@@ -22,7 +22,7 @@ function varargout = InputKeyPad(varargin)
 
 % Edit the above text to modify the response to help InputKeyPad
 
-% Last Modified by GUIDE v2.5 28-Nov-2016 17:54:13
+% Last Modified by GUIDE v2.5 28-Nov-2016 20:27:17
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -132,11 +132,7 @@ function AddNoise_Callback(hObject, eventdata, handles)
     plot(1:length(handles.currentOutputTime),handles.currentOutputTime);
 guidata(hObject, handles);
 
-% --- Executes on button press in RecalEnergy.
-function RecalEnergy_Callback(hObject, eventdata, handles)
-% hObject    handle to RecalEnergy (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+
 
 %inserts delay into the signal
 function InsertDelaybtn_Callback(hObject, eventdata, handles)
@@ -233,8 +229,17 @@ function ToEnergyFDPanel_Callback(hObject, eventdata, handles)
     set(handles.WindowSizeVal,'String',num2str(WindowSize));
     
     TempStr = strcat('Signal Length : ',num2str(sigLen))
-    
-    set(handles.SignallengthText,'String',TempStr);
+    set(handles.SigLengthVal,'String',TempStr);
+guidata(hObject, handles);
+
+% --- Executes on button press in RecalEnergy.
+function RecalEnergy_Callback(hObject, eventdata, handles)
+    samplingFreq  =  get(handles.SampFreqVal,'Value');
+    freqBinNumber  =  str2num(get(handles.FBNValue,'Value'));
+    numberofWindows = str2num(get(handles.NumberofWindowsVal,'Value'));
+    windowSize = str2num(get(handles.WindowSizeVal,'Value'));
+    [sigLen,WindowSize,numberofWindows,binNumber,sig] = computeEnergySig(handles.currentOutputTime,samplingFreq,freqBinNumber,numberofWindows,windowSize)
+    plotDigitinEnergy(hObject, eventdata, handles,sig)
     
 guidata(hObject, handles);
 
@@ -508,6 +513,3 @@ function NumberofWindowsVal_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
-
-
-

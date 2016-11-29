@@ -132,11 +132,7 @@ function AddNoise_Callback(hObject, eventdata, handles)
     plot(1:length(handles.currentOutputTime),handles.currentOutputTime);
 guidata(hObject, handles);
 
-% --- Executes on button press in RecalEnergy.
-function RecalEnergy_Callback(hObject, eventdata, handles)
-% hObject    handle to RecalEnergy (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+
 
 %inserts delay into the signal
 function InsertDelaybtn_Callback(hObject, eventdata, handles)
@@ -196,12 +192,12 @@ guidata(hObject, handles);
 % from time to Freq
 function ToFreqTDPanel_Callback(hObject, eventdata, handles)
     if not(isempty(handles.currentOutputTime))
-        handles.Viewable3 = get(handles.EnergyPanel,'position');
-handles.Viewable4 = get(handles.DetectorWindow,'position');
+        
         set(handles.FDPanel,'position',handles.Viewable1);
         set(handles.TDPanel,'position',handles.Viewable2);
         set(handles.EnergyPanel,'position',handles.Viewable3);
-        set(handles.
+        set(handles.DetectorWindow,'position',handles.Viewable4);
+        
         [handles.XaxisFreq,handles.currentOutputFreq] = plotDigitinFreq(hObject, eventdata, handles,handles.samplingFreq)
     else 
         set(handles.ErrorTD,'Visible','On');
@@ -235,8 +231,12 @@ function ToEnergyFDPanel_Callback(hObject, eventdata, handles)
     TempStr = strcat('Signal Length : ',num2str(sigLen))
     
     set(handles.SignallengthText,'String',TempStr);
-    
 guidata(hObject, handles);
+
+% --- Executes on button press in RecalEnergy.
+function RecalEnergy_Callback(hObject, eventdata, handles)
+get(handles.TDPanel,'position')
+
 
 % from energy to time
 function ToTimeEnergyPanel_Callback(hObject, eventdata, handles)

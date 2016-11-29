@@ -195,7 +195,7 @@ function RecalEnergy_Callback(hObject, eventdata, handles)
     windowSize = str2num(get(handles.WindowSizeVal,'String'));
     [error,sigLen,WindowSize,numberofWindows,binNumber,sig] = computeEnergySig(handles.currentOutputTime,samplingFreq,freqBinNumber,numberofWindows,windowSize)
     plotDigitinEnergy(hObject, eventdata, handles,sig)
- 
+    
     if not(isempty(error))
         set(handles.ErrorEnergy,'Visible','On');
         set(handles.ErrorEnergy,'String',error);
@@ -212,9 +212,8 @@ function Detect_Callback(hObject, eventdata, handles)
         set(handles.EnergyPanel,'position',handles.Viewable3);
         set(handles.FDPanel,'position',handles.Viewable4);
         % do some stuff here to find the digits
-guidata(hObject, handles);
-
 % Transistion Buttons
+
 % from time to Freq
 function ToFreqTDPanel_Callback(hObject, eventdata, handles)
     if not(isempty(handles.currentOutputTime))
@@ -222,6 +221,7 @@ function ToFreqTDPanel_Callback(hObject, eventdata, handles)
         set(handles.TDPanel,'position',handles.Viewable2);
         set(handles.EnergyPanel,'position',handles.Viewable3);
         set(handles.DetectorWindow,'position',handles.Viewable4);
+        
         [handles.XaxisFreq,handles.currentOutputFreq] = plotDigitinFreq(hObject, eventdata, handles,handles.samplingFreq)
     else 
         set(handles.ErrorTD,'Visible','On');
@@ -241,33 +241,37 @@ function ToEnergyFDPanel_Callback(hObject, eventdata, handles)
     % changing postions
     set(handles.EnergyPanel,'position',handles.Viewable1);
     set(handles.FDPanel,'position',handles.Viewable2);
-    set(handles.TDPanel,'position',handles.Viewable3);
+    set(handles.TPanel,'position',handles.Viewable3);
     set(handles.DetectorWindow,'position',handles.Viewable4);
     
     [error,sigLen,WindowSize,numberofWindows,binNumber,sig] = computeEnergySig(handles.currentOutputTime,handles.samplingFreq)
     plotDigitinEnergy(hObject, eventdata, handles,sig)
+    
     set(handles.SampFreqVal,'String',num2str(handles.samplingFreq));
+    
     set(handles.FBNValue,'String',num2str(binNumber));
+    
     set(handles.NumberofWindowsVal,'String',num2str(numberofWindows));
+    
     set(handles.WindowSizeVal,'String',num2str(WindowSize));
+    
     set(handles.SigLengthVal,'String',num2str(sigLen));
 guidata(hObject, handles);
+
 
 
 % from energy to time
 function ToTimeEnergyPanel_Callback(hObject, eventdata, handles)
     set(handles.TDPanel,'position',handles.Viewable1);
-    set(handles.FDPanel,'position',handles.Viewable2);
-    set(handles.EnergyPanel,'position',handles.Viewable3);
-    set(handles.DetectorWindow,'position',handles.Viewable4);
+    set(handles.EnergyPanel,'position',handles.Viewable2);
+    set(handles.FDPanel,'position',handles.Viewable3);
 guidata(hObject, handles);
 
 % from energy to freq
 function ToFreqEnergyPanel_Callback(hObject, eventdata, handles)
     set(handles.FDPanel,'position',handles.Viewable1);
-    set(handles.TDPanel,'position',handles.Viewable2);
-    set(handles.EnergyPanel,'position',handles.Viewable3);
-    set(handles.DetectorWindow,'position',handles.Viewable4);
+    set(handles.EnergyPanel,'position',handles.Viewable2);
+    set(handles.TDPanel,'position',handles.Viewable3);
 guidata(hObject, handles);
 
 %for the sub menu options
@@ -319,6 +323,7 @@ function NoisePower_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of NoisePower as text
 %        str2double(get(hObject,'String')) returns contents of NoisePower as a double
+
 
 % --------------------------------------------------------------------
 function Energy_Callback(hObject, eventdata, handles)

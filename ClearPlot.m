@@ -24,10 +24,6 @@ function ClearPlot(hObject, eventdata, handles)
     ylabel('Amplitude')
     xlabel('Index n')
 
-    handles.currentOutputTime = 0;
-    handles.currentOutputFreq = 0;
-    handles.XaxisTime = 0;
-    handles.XaxisFreq = 0;
     
 guidata(hObject, handles);
 

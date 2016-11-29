@@ -120,6 +120,10 @@ plotDigitinTime(hObject, eventdata, handles, 0,duration,handles.CCSval)
 
 function Clear_Callback(hObject, eventdata, handles)
     ClearPlot(hObject, eventdata, handles);
+    handles.currentOutputTime = 0;
+    handles.currentOutputFreq = 0;
+    handles.XaxisTime = 0;
+    handles.XaxisFreq = 0;
 guidata(hObject, handles);
 
 % adds and plot noise to the signal

@@ -3,7 +3,7 @@ function [] = plotDigitinEnergy(hObject, eventdata, handles,energySig)
 %   Detailed explanation goes here
     axes(handles.EnergyPlot);
     plot(energySig)
-    title('Magnitude of Signal')
+    title('Energy of Signal')
     ylabel('Amplitude')
     xlabel('Frequency')
     guidata(hObject, handles);

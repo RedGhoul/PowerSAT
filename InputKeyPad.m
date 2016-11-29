@@ -217,7 +217,7 @@ function ToEnergyFDPanel_Callback(hObject, eventdata, handles)
     set(handles.FDPanel,'position',handles.Viewable2);
     set(handles.TDPanel,'position',handles.Viewable3);
     
-    [sigLen,WindowSize,numberofWindows,binNumber,sig] = computeEnergySig(handles.currentOutputTime,handles.samplingFreq)
+    [error,sigLen,WindowSize,numberofWindows,binNumber,sig] = computeEnergySig(handles.currentOutputTime,handles.samplingFreq)
     plotDigitinEnergy(hObject, eventdata, handles,sig)
     
     set(handles.SampFreqVal,'String',num2str(handles.samplingFreq));
@@ -228,18 +228,24 @@ function ToEnergyFDPanel_Callback(hObject, eventdata, handles)
     
     set(handles.WindowSizeVal,'String',num2str(WindowSize));
     
-    TempStr = strcat('Signal Length : ',num2str(sigLen))
-    set(handles.SigLengthVal,'String',TempStr);
+    set(handles.SigLengthVal,'String',num2str(sigLen));
 guidata(hObject, handles);
 
 % --- Executes on button press in RecalEnergy.
 function RecalEnergy_Callback(hObject, eventdata, handles)
-    samplingFreq  =  get(handles.SampFreqVal,'Value');
-    freqBinNumber  =  str2num(get(handles.FBNValue,'Value'));
-    numberofWindows = str2num(get(handles.NumberofWindowsVal,'Value'));
-    windowSize = str2num(get(handles.WindowSizeVal,'Value'));
-    [sigLen,WindowSize,numberofWindows,binNumber,sig] = computeEnergySig(handles.currentOutputTime,samplingFreq,freqBinNumber,numberofWindows,windowSize)
+    samplingFreq  =  str2num(get(handles.SampFreqVal,'String'));
+    freqBinNumber  =  str2num(get(handles.FBNValue,'String'));
+    numberofWindows = str2num(get(handles.NumberofWindowsVal,'String'));
+    windowSize = str2num(get(handles.WindowSizeVal,'String'));
+    [error,sigLen,WindowSize,numberofWindows,binNumber,sig] = computeEnergySig(handles.currentOutputTime,samplingFreq,freqBinNumber,numberofWindows,windowSize)
     plotDigitinEnergy(hObject, eventdata, handles,sig)
+    
+    if not(isempty(error))
+        set(handles.ErrorEnergy,'Visible','On');
+        set(handles.ErrorEnergy,'String',error);
+    else
+        set(handles.ErrorEnergy,'Visible','Off');
+    end
     
 guidata(hObject, handles);
 

@@ -22,7 +22,7 @@ function varargout = InputKeyPad(varargin)
 
 % Edit the above text to modify the response to help InputKeyPad
 
-% Last Modified by GUIDE v2.5 29-Nov-2016 15:06:06
+% Last Modified by GUIDE v2.5 29-Nov-2016 16:04:46
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -269,6 +269,34 @@ function ToFreqEnergyPanel_Callback(hObject, eventdata, handles)
     set(handles.EnergyPanel,'position',handles.Viewable3);
     set(handles.DetectorWindow,'position',handles.Viewable4);
 guidata(hObject, handles);
+
+
+% from detector to freq
+function ToFreqDectetor_Callback(hObject, eventdata, handles)
+    set(handles.FDPanel,'position',handles.Viewable1);
+    set(handles.TDPanel,'position',handles.Viewable2);
+    set(handles.EnergyPanel,'position',handles.Viewable3);
+    set(handles.DetectorWindow,'position',handles.Viewable4);
+guidata(hObject, handles);
+
+
+% from detector to time
+function ToTimeDectetor_Callback(hObject, eventdata, handles)
+    set(handles.TDPanel,'position',handles.Viewable1);
+    set(handles.FDPanel,'position',handles.Viewable2);
+    set(handles.EnergyPanel,'position',handles.Viewable3);
+    set(handles.DetectorWindow,'position',handles.Viewable4);
+guidata(hObject, handles);
+
+
+% from detector to energy
+function ToEnergyDectetor_Callback(hObject, eventdata, handles)
+    set(handles.DetectorWindow,'position',handles.Viewable1);
+    set(handles.FDPanel,'position',handles.Viewable2);
+    set(handles.EnergyPanel,'position',handles.Viewable3);
+    set(handles.TDPanel,'position',handles.Viewable4);
+guidata(hObject, handles);
+
 
 %for the sub menu options
 % --------------------------------------------------------------------
@@ -525,6 +553,3 @@ function NumberofWindowsVal_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
-
-
-

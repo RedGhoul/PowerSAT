@@ -234,7 +234,19 @@ function Detect_Callback(hObject, eventdata, handles)
         set(handles.TDPanel,'position',handles.Viewable2);
         set(handles.EnergyPanel,'position',handles.Viewable3);
         set(handles.FDPanel,'position',handles.Viewable4);
-        % do some stuff here to find the digits
+        [digitsFound,error] = detectDigits(handles.currentOutputEE);
+        
+        if digitsFound == 0
+             set(handles.DetectorError,'Visible','On');
+             set(handles.DetectorError,'String','Could not find any digits :(');
+        else
+            % the output of detect digits is going to be comma seprated values
+            %plot the different sections fo the energy sections into
+            % different colors 
+            set(handles.DetectorError,'Visible','Off');
+            set(handles.DigitsDetectedEE,'String',strcat('Digits Detected:  ',digitsFound));
+            set(handles.PercentErrorEE,'String',strcat(strcat('Percent Error:  ',num2str(error)),'%'));
+        end
 guidata(hObject, handles);
 
 % Transistion Buttons

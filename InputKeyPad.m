@@ -124,7 +124,7 @@ guidata(hObject, handles);
 
 % adds and plot noise to the signal
 function AddNoise_Callback(hObject, eventdata, handles)
-    ClearPlot(hObject, eventdata, handles,1);
+    ClearPlot(hObject, eventdata, handles);
     axes(handles.OutputChart);
     NoisePowerVal = str2num(get(handles.NoisePower,'String'));
     NoiseAlphaVal = str2num(get(handles.AlphaOfNoise,'String'));
@@ -136,7 +136,7 @@ guidata(hObject, handles);
 
 %inserts delay into the signal
 function InsertDelaybtn_Callback(hObject, eventdata, handles)
-    ClearPlot(hObject, eventdata, handles,1);
+    ClearPlot(hObject, eventdata, handles);
     axes(handles.OutputChart);
     testVal = handles.currentOutputTime;
         if isempty(testVal) == false

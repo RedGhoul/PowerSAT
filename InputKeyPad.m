@@ -22,7 +22,7 @@ function varargout = InputKeyPad(varargin)
 
 % Edit the above text to modify the response to help InputKeyPad
 
-% Last Modified by GUIDE v2.5 29-Nov-2016 16:04:46
+% Last Modified by GUIDE v2.5 29-Nov-2016 16:10:27
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -56,8 +56,9 @@ handles.Viewable2 = get(handles.FDPanel,'position');
 handles.Viewable3 = get(handles.EnergyPanel,'position');
 handles.Viewable4 = get(handles.DetectorWindow,'position');
 %some global arrays
-handles.currentOutputTime = []
-handles.currentOutputFreq = []
+handles.currentOutputTime = [] % signal in time
+handles.currentOutputFreq = [] % signal in Freq
+handles.currentOutputEE = [] % signal in Energy 
 handles.XaxisTime = []
 handles.XaxisFreq = []
 handles.samplingFreq = 400*2 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -122,6 +123,7 @@ function Clear_Callback(hObject, eventdata, handles)
     ClearPlot(hObject, eventdata, handles);
     handles.currentOutputTime = 0;
     handles.currentOutputFreq = 0;
+    handles.currentOutputEE = 0;
     handles.XaxisTime = 0;
     handles.XaxisFreq = 0;
 guidata(hObject, handles);
@@ -175,16 +177,36 @@ guidata(hObject, handles);
 
 % --- Executes on button press in ViewAsFigureFreq.
 function ViewAsFigureFreq_Callback(hObject, eventdata, handles)
-    figure('Name','Freq Domain  - Magnitude Signal');
-    freqAxe = handles.XaxisFreq;
-    plot(handles.XaxisFreq,abs(handles.currentOutputFreq));
-    ylabel('Amplitude')
-    xlabel('Frequency')
+    if handles.currentOutputFreq ~= 0
+        set(handles.FreqError,'Visible','Off');
+        figure('Name','Freq Domain  - Magnitude Signal');
+        freqAxe = handles.XaxisFreq;
+        plot(handles.XaxisFreq,abs(handles.currentOutputFreq));
+        ylabel('Amplitude')
+        xlabel('Frequency')
 
-    figure('Name','Freq Domain - Phase Signal');
-    plot(handles.XaxisFreq,angle(handles.currentOutputFreq));
-    ylabel('Amplitude')
-    xlabel('Frequency')
+        figure('Name','Freq Domain - Phase Signal');
+        plot(handles.XaxisFreq,angle(handles.currentOutputFreq));
+        ylabel('Amplitude')
+        xlabel('Frequency')
+    else
+        set(handles.FreqError,'Visible','On');
+        set(handles.FreqError,'String','There is nothing to plot');
+    end 
+guidata(hObject, handles);
+
+% --- Executes on button press in ViewAsFigureEnergy.
+function ViewAsFigureEnergy_Callback(hObject, eventdata, handles)
+    if handles.currentOutputEE ~= 0
+        set(handles.ErrorEnergy,'Visible','Off');
+        figure('Name','Energy Signal Plot');
+        plot(1:length(handles.currentOutputEE),handles.currentOutputEE);
+        ylabel('Amplitude')
+        xlabel('Index - n')
+    else
+        set(handles.ErrorEnergy,'Visible','On');
+        set(handles.ErrorEnergy,'String','There is nothing to plot');
+    end
 guidata(hObject, handles);
 
 % --- Executes on button press in RecalEnergy.
@@ -194,6 +216,7 @@ function RecalEnergy_Callback(hObject, eventdata, handles)
     numberofWindows = str2num(get(handles.NumberofWindowsVal,'String'));
     windowSize = str2num(get(handles.WindowSizeVal,'String'));
     [error,sigLen,WindowSize,numberofWindows,binNumber,sig] = computeEnergySig(handles.currentOutputTime,samplingFreq,freqBinNumber,numberofWindows,windowSize)
+    
     plotDigitinEnergy(hObject, eventdata, handles,sig)
  
     if not(isempty(error))
@@ -456,11 +479,7 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-% --- Executes on button press in pushbutton32.
-function pushbutton32_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton32 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+
 
 
 

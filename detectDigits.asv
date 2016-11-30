@@ -24,7 +24,6 @@ function [digitsDetected,errorPercentage] = detectDigits(energySignal)
     incFail = 0;
     cannotFind = false;
     foundPoints = [];
-    errorPercentage = '';
     for index=1:length(intersectionDiffs)
         diffs = abs(envelope - lines(index));
         minDiff = min(diffs);
@@ -54,23 +53,22 @@ function [digitsDetected,errorPercentage] = detectDigits(energySignal)
         
         % The thing below is just to verify that it is infact a legit digit
         % If ever digit is 50 units long, and the delay is another 50 units
-        % long, then we say that each tolrance needs to 50 units long for it
+        % long, then we say that each torlance needs to 50 units long for it
         % be a valid digit
         if length(foundPoints(index)) == 2
-            diffoundPoint = abs(foundPoints(1) - foundPoints(2)) 
-            if diffoundPoint <= 55 && diffoundPoint >= 50
-                digitsDetected = strcat(strcat(digitsDetected,','),num2str(index));
-            end
-        end
+            diffoundPoint = abs(foundPoints(1) - foundPoints(2))
+            
+            if 0.5 <= diffoundPoint
+        
         
     end 
         if cannotFind == true
-            errorPercentage = '';
-            digitsDetected = '';
+            errorPercentage = 0;
+            digitsDetected = 0;
         else
             %digits actually found
-            errorPercentage = errorPercentage;
-            digitsDetected = digitsDetected; 
+            errorPercentage = 0;
+            digitsDetected = 0; 
         end
 end
 

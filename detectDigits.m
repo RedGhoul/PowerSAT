@@ -10,6 +10,9 @@ function [digitsDetected,errorPercentage] = detectDigits(energySignal)
 % based on the difference, classify it into a digit
     nFFT = length(energySignal)+ 1000;
     envelope = hilbert(energySignal,nFFT);
+    % have no idea if this will work
+    % have to increase the amps to larger values or smaller values
+    % depending a number of things
     lines1 = ones(1,length(envelope)) .* 1
     lines2 = ones(1,length(envelope)) .* 2
     lines3 = ones(1,length(envelope)) .* 3

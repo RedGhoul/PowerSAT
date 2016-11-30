@@ -1,5 +1,8 @@
 function [sigLength,OP] = genEncodedOutput(F1,F2,F3,duration)
-    sigLength = 1:duration;
+    multiplerForTime = 10;
+    sigLength = 1:(duration*multiplerForTime);
+    
+    %10 units equals 1 milisec
     SigOne = [F1,F2,F3]; % Hz
     fs = 4651; % Sampling frequency
     Ts = 1/fs;

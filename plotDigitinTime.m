@@ -1,5 +1,6 @@
 function plotDigitinTime(hObject, eventdata, handles, digitNum,duration,CCS)
     axes(handles.OutputChart);
+    
     switch digitNum
         case 1
             [len,output] = genEncodedOutput(150,200,300,duration);
@@ -46,8 +47,8 @@ function plotDigitinTime(hObject, eventdata, handles, digitNum,duration,CCS)
     end 
     
     title('Time Domain Signal')
-    ylabel('Discrete-Time Signal')
-    xlabel('Time Index n')
+    ylabel('Amplitude')
+    xlabel('Time [10 Units = 1 milisec]')
 guidata(hObject, handles);
 
 

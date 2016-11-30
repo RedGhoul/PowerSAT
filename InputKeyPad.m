@@ -62,7 +62,8 @@ handles.currentOutputEE = [] % signal in Energy
 handles.XaxisTime = []
 handles.XaxisFreq = []
 handles.samplingFreq = 400*2 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-handles.CCSval = false; % value for concatnating it or not
+handles.CCSval = false;
+handles.unitConvo = 10;% value for concatnating it or not
 % Choose default command line output for InputKeyPad
 handles.output = hObject;
 % Update handles structure
@@ -78,42 +79,52 @@ varargout{1} = handles.output;
 
 % all of the following functions are just button press events
 function One_Callback(hObject, eventdata, handles)
+Clear_Callback(hObject, eventdata, handles);
 duration = str2num(get(handles.EnterDur,'String'));
 plotDigitinTime(hObject, eventdata, handles, 1,duration,handles.CCSval) % the change
 
 function Two_Callback(hObject, eventdata, handles)
+Clear_Callback(hObject, eventdata, handles)
 duration = str2num(get(handles.EnterDur,'String'));
 plotDigitinTime(hObject, eventdata, handles, 2,duration,handles.CCSval)
 
 function Seven_Callback(hObject, eventdata, handles)
+Clear_Callback(hObject, eventdata, handles)
 duration = str2num(get(handles.EnterDur,'String'));
 plotDigitinTime(hObject, eventdata, handles, 3,duration,handles.CCSval)
 
 function Four_Callback(hObject, eventdata, handles)
+Clear_Callback(hObject, eventdata, handles)
 duration = str2num(get(handles.EnterDur,'String'));
 plotDigitinTime(hObject, eventdata, handles, 4,duration,handles.CCSval)
 
 function Five_Callback(hObject, eventdata, handles)
+Clear_Callback(hObject, eventdata, handles)
 duration = str2num(get(handles.EnterDur,'String'));
 plotDigitinTime(hObject, eventdata, handles, 5,duration,handles.CCSval)
 
 function Eight_Callback(hObject, eventdata, handles)
+Clear_Callback(hObject, eventdata, handles)
 duration = str2num(get(handles.EnterDur,'String'));
 plotDigitinTime(hObject, eventdata, handles, 6,duration,handles.CCSval)
 
 function Three_Callback(hObject, eventdata, handles)
+Clear_Callback(hObject, eventdata, handles)
 duration = str2num(get(handles.EnterDur,'String'));
 plotDigitinTime(hObject, eventdata, handles, 7,duration,handles.CCSval)
 
 function Six_Callback(hObject, eventdata, handles)
+Clear_Callback(hObject, eventdata, handles)
 duration = str2num(get(handles.EnterDur,'String'));
 plotDigitinTime(hObject, eventdata, handles, 8,duration,handles.CCSval)
 
 function Nine_Callback(hObject, eventdata, handles)
+Clear_Callback(hObject, eventdata, handles)
 duration = str2num(get(handles.EnterDur,'String'));
 plotDigitinTime(hObject, eventdata, handles, 9,duration,handles.CCSval)
 
 function Zero_Callback(hObject, eventdata, handles)
+Clear_Callback(hObject, eventdata, handles)
 duration = str2num(get(handles.EnterDur,'String'));
 plotDigitinTime(hObject, eventdata, handles, 0,duration,handles.CCSval)
 
@@ -140,14 +151,13 @@ guidata(hObject, handles);
 
 %inserts delay into the signal
 function InsertDelaybtn_Callback(hObject, eventdata, handles)
-    ClearPlot(hObject, eventdata, handles);
     axes(handles.OutputChart);
     testVal = handles.currentOutputTime;
         if isempty(testVal) == false
             if (length(testVal) - 1) ~= 0 % this is just "!="
                 InFront = get(handles.InFrontCB,'Value');
                 InBack = get(handles.InBackCB,'Value');
-                LengthOfDelay = str2num(get(handles.FirstSigDelay,'String'));
+                LengthOfDelay = str2num(get(handles.FirstSigDelay,'String'))*handles.unitConvo;
                 [handles.XaxisTime,handles.currentOutputTime] = insertDelay(handles.currentOutputTime,LengthOfDelay,InFront,InBack);
                 plot(handles.XaxisTime,handles.currentOutputTime);
             else
@@ -216,7 +226,7 @@ function RecalEnergy_Callback(hObject, eventdata, handles)
     numberofWindows = str2num(get(handles.NumberofWindowsVal,'String'));
     windowSize = str2num(get(handles.WindowSizeVal,'String'));
     [error,sigLen,WindowSize,numberofWindows,binNumber,sig] = computeEnergySig(handles.currentOutputTime,samplingFreq,freqBinNumber,numberofWindows,windowSize)
-    
+    handles.currentOutputEE = sig;
     plotDigitinEnergy(hObject, eventdata, handles,sig)
  
     if not(isempty(error))
@@ -297,6 +307,7 @@ function ToEnergyFDPanel_Callback(hObject, eventdata, handles)
     end
     
     [error,sigLen,WindowSize,numberofWindows,binNumber,sig] = computeEnergySig(handles.currentOutputTime,handles.samplingFreq)
+    handles.currentOutputEE = sig;
     plotDigitinEnergy(hObject, eventdata, handles,sig)
     set(handles.SampFreqVal,'String',num2str(handles.samplingFreq));
     set(handles.FBNValue,'String',num2str(binNumber));

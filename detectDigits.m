@@ -28,6 +28,9 @@ function [digitsDetected,errorPercentage] = detectDigits(energySignal)
     cannotFind = false;
     foundPoints = [];
     errorPercentage = '';
+    diffs = abs(envelope - lines(index));
+    minDiff = min(diffs);
+    intersectionDiffs = find(diffs == minDiff);
     for index=1:length(intersectionDiffs)
         diffs = abs(envelope - lines(index));
         minDiff = min(diffs);

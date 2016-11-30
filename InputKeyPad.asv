@@ -343,10 +343,10 @@ guidata(hObject, handles);
 
 % from detector to energy
 function ToEnergyDectetor_Callback(hObject, eventdata, handles)
-    set(handles.EnergyPanel,'position',handles.Viewable1);
-    set(handles.TDPanel,'position',handles.Viewable2);
-    set(handles.FDPanel,'position',handles.Viewable3);
-    set(handles.DetectorWindow,'position',handles.Viewable4);
+    set(handles.DetectorWindow,'position',handles.Viewable1);
+    set(handles.FDPanel,'position',handles.Viewable2);
+    set(handles.EnergyPanel,'position',handles.Viewable3);
+    set(handles.TDPanel,'position',handles.Viewable4);
 guidata(hObject, handles);
 
 

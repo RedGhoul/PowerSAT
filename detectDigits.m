@@ -28,10 +28,10 @@ function [digitsDetected,errorPercentage] = detectDigits(energySignal)
     cannotFind = false;
     foundPoints = [];
     errorPercentage = '';
-    diffs = abs(envelope - lines(index));
-    minDiff = min(diffs);
-    intersectionDiffs = find(diffs == minDiff);
-    for index=1:length(intersectionDiffs)
+%     diffs = abs(envelope - lines(0));
+%     minDiff = min(diffs);
+%     intersectionDiffs = find(diffs == minDiff);
+    for index=1:length(lines)
         diffs = abs(envelope - lines(index));
         minDiff = min(diffs);
         intersectionDiffs = find(diffs == minDiff);
@@ -63,7 +63,7 @@ function [digitsDetected,errorPercentage] = detectDigits(energySignal)
         % long, then we say that each tolrance needs to 50 units long for it
         % be a valid digit
         if length(foundPoints(index)) == 2
-            diffoundPoint = abs(foundPoints(1) - foundPoints(2)) 
+            diffoundPoint = abs(foundPoints(1) - foundPoints(2));
             if diffoundPoint <= 55 && diffoundPoint >= 50
                 digitsDetected = strcat(strcat(digitsDetected,','),num2str(index));
             end

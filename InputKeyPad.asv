@@ -226,7 +226,16 @@ function RecalEnergy_Callback(hObject, eventdata, handles)
     numberofWindows = str2num(get(handles.NumberofWindowsVal,'String'));
     windowSize = str2num(get(handles.WindowSizeVal,'String'));
     Engs = computeEng(handles.currentOutputTime,handles.freqs);
+%     [error,sigLen,WindowSize,numberofWindows,binNumber,sig] = computeEnergySig(handles.currentOutputTime,samplingFreq,freqBinNumber,numberofWindows,windowSize)
+%     handles.currentOutputEE = sig;
     plotDigitinEnergy(hObject, eventdata, handles,Engs,handles.freqs)
+%  
+%     if not(isempty(error))
+%         set(handles.ErrorEnergy,'Visible','On');
+%         set(handles.ErrorEnergy,'String',error);
+%     else
+%         set(handles.ErrorEnergy,'Visible','Off');
+%     end
     
 guidata(hObject, handles);
 
@@ -280,8 +289,6 @@ function ToEnergyFDPanel_Callback(hObject, eventdata, handles)
     set(handles.FDPanel,'position',handles.Viewable2);
     set(handles.TDPanel,'position',handles.Viewable3);
     set(handles.DetectorWindow,'position',handles.Viewable4);
-    % this piece of code padds the signal with engough zeros such that it
-    % meets the min signal length
     lenOutputTime = length(handles.currentOutputTime)
     multipler = 0;
     bestlength = 0;
@@ -299,8 +306,15 @@ function ToEnergyFDPanel_Callback(hObject, eventdata, handles)
         pad = zeros(1,padlength)
         handles.currentOutputTime = horzcat(handles.currentOutputTime,pad);
     end
-    Engs = computeEng(handles.currentOutputTime,handles.freqs,handles.samplingFreq);
-    plotDigitinEnergy(hObject, eventdata, handles,Engs,handles.freqs)
+    % need 7 of this things
+    [error,sigLen,WindowSize,numberofWindows,binNumber,sig] = computeEnergySig(handles.currentOutputTime,handles.samplingFreq)
+    handles.currentOutputEE = sig;
+    plotDigitinEnergy(hObject, eventdata, handles,sig)
+%     set(handles.SampFreqVal,'String',num2str(handles.samplingFreq));
+%     set(handles.FBNValue,'String',num2str(binNumber));
+%     set(handles.NumberofWindowsVal,'String',num2str(numberofWindows));
+%     set(handles.WindowSizeVal,'String',num2str(WindowSize));
+%     set(handles.SigLengthVal,'String',num2str(sigLen));
 guidata(hObject, handles);
 
 

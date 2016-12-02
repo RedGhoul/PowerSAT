@@ -212,10 +212,12 @@ function ViewAsFigureEnergy_Callback(hObject, eventdata, handles)
 trueVal = handles.currentOutputEE;
     if isempty(handles.currentOutputEE) == false
         set(handles.ErrorEnergy,'Visible','Off');
-        figure('Name','Energy Signal Plot');
-        plot(1:length(handles.currentOutputEE),handles.currentOutputEE);
-        ylabel('Amplitude')
-        xlabel('Time [10 Units = 1 milisec]')
+        for index = 1:length(handles.freqs)
+            figure('Name',strcat(strcat('Energy Signal Plot for: ',num2str(handles.freqs(index))),'Hz Freq Bin'));
+            plot(1:length(handles.currentOutputEE(index,:)),handles.currentOutputEE(index,:));
+            ylabel('Amplitude')
+            xlabel('Time [10 Units = 1 milisec]')
+        end
     else
         set(handles.ErrorEnergy,'Visible','On');
         set(handles.ErrorEnergy,'String','There is nothing to plot');

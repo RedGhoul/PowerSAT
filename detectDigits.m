@@ -8,33 +8,37 @@ function [digitsDetected,errorPercentage] = detectDigits(energySignal)
 % then find the distances between the points
 % to see if they are right
 % based on the difference, classify it into a digit
-    nFFT = length(energySignal)+ 1000;
-    envelope = hilbert(energySignal,nFFT);
-    % have no idea if this will work
-    % have to increase the amps to larger values or smaller values
-    % depending a number of things
-    lines1 = ones(1,length(envelope)) .* 1
-    lines2 = ones(1,length(envelope)) .* 2
-    lines3 = ones(1,length(envelope)) .* 3
-    lines4 = ones(1,length(envelope)) .* 4
-    lines5 = ones(1,length(envelope)) .* 5
-    lines6 = ones(1,length(envelope)) .* 6
-    lines7 = ones(1,length(envelope)) .* 7
-    lines8 = ones(1,length(envelope)) .* 8
-    lines9 = ones(1,length(envelope)) .* 9
-    lines0 = ones(1,length(envelope)) .* 0
+    stdOfsig = std(energySignal)
+    
+    lag = round(length(energySignal)*0.05);
+    MODenergySignal = tsmovavg(energySignal,'s',lag,1)
+    % Have to find the peak values then set the highest one to the largest
+    % digit
+    %envelope
+    lines6 = ones(1,length(envelope)) .* 6; % 800
+    lines2 = ones(1,length(envelope)) .* 2; % 700
+    lines4 = ones(1,length(envelope)) .* 4; % 700
+    lines9 = ones(1,length(envelope)) .* 9; % 700
+    lines3 = ones(1,length(envelope)) .* 3; % 750
+    lines5 = ones(1,length(envelope)) .* 5; % 750
+    lines8 = ones(1,length(envelope)) .* 8; % 650
+    lines1 = ones(1,length(envelope)) .* (2.5*10^4); % 650
+    lines0 = ones(1,length(envelope)) .* 0; % 650
+    lines7 = ones(1,length(envelope)) .* 7; % 600
     lines = [lines0,lines1,lines2,lines3,lines4,lines5,lines6,lines7,lines8,lines9];
     incFail = 0;
     cannotFind = false;
     foundPoints = [];
     errorPercentage = '';
-%     diffs = abs(envelope - lines(0));
-%     minDiff = min(diffs);
-%     intersectionDiffs = find(diffs == minDiff);
+    % diffs = abs(envelope - lines(0));
+    % minDiff = min(diffs);
+    % intersectionDiffs = find(diffs == minDiff);
     for index=1:length(lines)
-        diffs = abs(envelope - lines(index));
-        minDiff = min(diffs);
-        intersectionDiffs = find(diffs == minDiff);
+        % you start by trying to find the first lope that corsponds to the
+        % the first digit 0
+        diffs = abs(envelope - lines(index)); % you get a massive array of differences
+        minDiff = min(diffs); % The min diff counts as a place of most likely intersection
+        intersectionDiffs = find(diffs == minDiff); % finds the index where this min difference occurs
         
         while intersectionDiffs == 0 || length(intersectionDiffs) ~= 2
             minDiff = minDiff + 0.5;

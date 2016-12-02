@@ -42,8 +42,6 @@ else
     gui_mainfcn(gui_State, varargin{:});
 end
 % End initialization code - DO NOT EDIT
-
-
 % --- Executes just before InputKeyPad is made visible.
 function InputKeyPad_OpeningFcn(hObject, eventdata, handles, varargin)
 % This function has no output args, see OutputFcn.
@@ -55,22 +53,19 @@ handles.Viewable1 = get(handles.TDPanel,'position');
 handles.Viewable2 = get(handles.FDPanel,'position');
 handles.Viewable3 = get(handles.EnergyPanel,'position');
 handles.Viewable4 = get(handles.DetectorWindow,'position');
-%some global arrays
 handles.currentOutputTime = []; % signal in time
 handles.currentOutputFreq = []; % signal in Freq
-handles.currentOutputEE = []; % signal in Energy 
+handles.currentOutputEE = 0; % signal in Energy 
 handles.freqs = [100,150,200,250,300,350,400];
 handles.XaxisTime = [];
 handles.XaxisFreq = [];
 handles.samplingFreq = 2048; %400*2 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 handles.CCSval = false;
-handles.unitConvo = 10;% value for concatnating it or not
-% Choose default command line output for InputKeyPad
+handles.unitConvo = 10;% unit conversion factor
 handles.output = hObject;
-% Update handles structure
 guidata(hObject, handles);
 
-% Setting the Global Options
+% setting the value to allow the concatenating of signals and delays
 function CCSCB_Callback(hObject, eventdata, handles)
 handles.CCSval = get(handles.CCSCB,'Value');
 guidata(hObject, handles);
@@ -82,7 +77,7 @@ varargout{1} = handles.output;
 function One_Callback(hObject, eventdata, handles)
 Clear_Callback(hObject, eventdata, handles);
 duration = str2num(get(handles.EnterDur,'String'));
-plotDigitinTime(hObject, eventdata, handles, 1,duration,handles.CCSval) % the change
+plotDigitinTime(hObject, eventdata, handles, 1,duration,handles.CCSval)
 
 function Two_Callback(hObject, eventdata, handles)
 Clear_Callback(hObject, eventdata, handles)
@@ -130,7 +125,7 @@ duration = str2num(get(handles.EnterDur,'String'));
 plotDigitinTime(hObject, eventdata, handles, 0,duration,handles.CCSval)
 
 % functionality Buttons
-
+% clear all the graphs in the application 
 function Clear_Callback(hObject, eventdata, handles)
     ClearPlot(hObject, eventdata, handles);
     handles.currentOutputTime = 0;
@@ -140,7 +135,7 @@ function Clear_Callback(hObject, eventdata, handles)
     handles.XaxisFreq = 0;
 guidata(hObject, handles);
 
-% adds and plot noise to the signal
+% adds and plots noise to the signal in Time domain
 function AddNoise_Callback(hObject, eventdata, handles)
     ClearPlot(hObject, eventdata, handles);
     axes(handles.OutputChart);
@@ -149,7 +144,7 @@ function AddNoise_Callback(hObject, eventdata, handles)
     plot(1:length(handles.currentOutputTime),handles.currentOutputTime);
 guidata(hObject, handles);
 
-%inserts delay into the signal
+% inserts delay into the signal
 function InsertDelaybtn_Callback(hObject, eventdata, handles)
     axes(handles.OutputChart);
     testVal = handles.currentOutputTime;
@@ -168,15 +163,16 @@ function InsertDelaybtn_Callback(hObject, eventdata, handles)
         end     
 guidata(hObject, handles);
 
-% --- Executes on button press in ViewAsFigureTime.
+% --- Executes on button press in View As Figure of the time domain signal.
 function ViewAsFigureTime_Callback(hObject, eventdata, handles)
     testVal = handles.currentOutputTime;
         if isempty(testVal) == false
             if (length(testVal) - 1) ~= 0 % this is just "!="
                 figure('Name','Time Domain Signal');
                 plot(1:length(handles.currentOutputTime),handles.currentOutputTime)
+                title('Time Domain Signal')
                 ylabel('Amplitude')
-                xlabel('Time Index n')
+                xlabel('Time [10 Units = 1 milisec]')
             else
                 set(handles.ErrorTD,'Visible','On');
             end
@@ -189,7 +185,7 @@ guidata(hObject, handles);
 function ViewAsFigureFreq_Callback(hObject, eventdata, handles)
     if handles.currentOutputFreq ~= 0
         set(handles.FreqError,'Visible','Off');
-        figure('Name','Freq Domain  - Magnitude Signal');
+        figure('Name','Freq Domain - Magnitude Signal');
         freqAxe = handles.XaxisFreq;
         plot(handles.XaxisFreq,abs(handles.currentOutputFreq));
         ylabel('Amplitude')
@@ -205,7 +201,7 @@ function ViewAsFigureFreq_Callback(hObject, eventdata, handles)
     end 
 guidata(hObject, handles);
 
-% --- Executes on button press in ViewAsFigureEnergy.
+% --- Executes on button press in ViewAsFigure Energy domain.
 function ViewAsFigureEnergy_Callback(hObject, eventdata, handles)
     if handles.currentOutputEE ~= 0
         set(handles.ErrorEnergy,'Visible','Off');
@@ -219,25 +215,14 @@ function ViewAsFigureEnergy_Callback(hObject, eventdata, handles)
     end
 guidata(hObject, handles);
 
-% --- Executes on button press in RecalEnergy.
-function RecalEnergy_Callback(hObject, eventdata, handles)
-    samplingFreq  =  str2num(get(handles.SampFreqVal,'String'));
-    freqBinNumber  =  str2num(get(handles.FBNValue,'String'));
-    numberofWindows = str2num(get(handles.NumberofWindowsVal,'String'));
-    windowSize = str2num(get(handles.WindowSizeVal,'String'));
-    Engs = computeEng(handles.currentOutputTime,handles.freqs);
-    plotDigitinEnergy(hObject, eventdata, handles,Engs,handles.freqs)
-    
-guidata(hObject, handles);
-
-% --- Executes on button press in Detect.
+% --- Executes on button press in Detect does analysis on the different signals.
 function Detect_Callback(hObject, eventdata, handles)
         set(handles.DetectorWindow,'position',handles.Viewable1);
         set(handles.TDPanel,'position',handles.Viewable2);
         set(handles.EnergyPanel,'position',handles.Viewable3);
         set(handles.FDPanel,'position',handles.Viewable4);
         [digitsFound,error] = detectDigits(handles.currentOutputEE);
-        
+        % area where I need to change up a number of things
         if digitsFound == 0
              set(handles.DetectorError,'Visible','On');
              set(handles.DetectorError,'String','Could not find any digits :(');
@@ -251,7 +236,8 @@ function Detect_Callback(hObject, eventdata, handles)
         end
 guidata(hObject, handles);
 
-% Transistion Buttons
+% Transistion Buttons from panel to panel
+
 % from time to Freq
 function ToFreqTDPanel_Callback(hObject, eventdata, handles)
     if not(isempty(handles.currentOutputTime))
@@ -280,7 +266,7 @@ function ToEnergyFDPanel_Callback(hObject, eventdata, handles)
     set(handles.FDPanel,'position',handles.Viewable2);
     set(handles.TDPanel,'position',handles.Viewable3);
     set(handles.DetectorWindow,'position',handles.Viewable4);
-    % this piece of code padds the signal with engough zeros such that it
+    % this piece of code pads the signal with engough zeros such that it
     % meets the min signal length
     lenOutputTime = length(handles.currentOutputTime)
     multipler = 0;
@@ -299,8 +285,9 @@ function ToEnergyFDPanel_Callback(hObject, eventdata, handles)
         pad = zeros(1,padlength)
         handles.currentOutputTime = horzcat(handles.currentOutputTime,pad);
     end
-    Engs = computeEng(handles.currentOutputTime,handles.freqs,handles.samplingFreq);
-    plotDigitinEnergy(hObject, eventdata, handles,Engs,handles.freqs)
+    EnergysOutputed = computeEng(handles.currentOutputTime,handles.freqs,handles.samplingFreq);
+    plotDigitinEnergy(hObject, eventdata, handles,EnergysOutputed,handles.freqs)
+    handles.currentOutputEE = EnergysOutputed;
 guidata(hObject, handles);
 
 

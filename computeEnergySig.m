@@ -20,9 +20,10 @@ function [errormsg,sigLen,WindowSize,numberOfWindows,binNumber,outPutEnergySig] 
     
     hamWindow = hamming(windowSize);
     outPutEnergySig = [];
+    
     if not(windowSize > sigLength) && not(windowSize < 0)
         try
-            % can we hamming window every sub window we get ?
+            % can we hamming window every sub window we get ? yes we can :)
             for shift=0:numberOfWindows-1;
                 Window(:, shift+1) = incomingTimeSignal(shift+1:shift+windowSize);
                 fftWindow = fft(Window(:, shift+1).*hamWindow);
@@ -34,6 +35,7 @@ function [errormsg,sigLen,WindowSize,numberOfWindows,binNumber,outPutEnergySig] 
     else
         error = 'Window Size is much greater than signal length !';
     end 
+    
     %outputs
     sigLen = sigLength
     WindowSize = windowSize

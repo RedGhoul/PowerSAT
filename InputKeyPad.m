@@ -56,12 +56,12 @@ handles.Viewable2 = get(handles.FDPanel,'position');
 handles.Viewable3 = get(handles.EnergyPanel,'position');
 handles.Viewable4 = get(handles.DetectorWindow,'position');
 %some global arrays
-handles.currentOutputTime = [] % signal in time
-handles.currentOutputFreq = [] % signal in Freq
-handles.currentOutputEE = [] % signal in Energy 
-handles.XaxisTime = []
-handles.XaxisFreq = []
-handles.samplingFreq = 400*2 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+handles.currentOutputTime = []; % signal in time
+handles.currentOutputFreq = []; % signal in Freq
+handles.currentOutputEE = []; % signal in Energy 
+handles.XaxisTime = [];
+handles.XaxisFreq = [];
+handles.samplingFreq = 2048; %400*2 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 handles.CCSval = false;
 handles.unitConvo = 10;% value for concatnating it or not
 % Choose default command line output for InputKeyPad
@@ -143,9 +143,8 @@ guidata(hObject, handles);
 function AddNoise_Callback(hObject, eventdata, handles)
     ClearPlot(hObject, eventdata, handles);
     axes(handles.OutputChart);
-    NoisePowerVal = str2num(get(handles.NoisePower,'String'));
     NoiseAlphaVal = str2num(get(handles.AlphaOfNoise,'String'));
-    handles.currentOutputTime = startNoise(handles.currentOutputTime,NoisePowerVal, NoiseAlphaVal);
+    handles.currentOutputTime = startNoise(handles.currentOutputTime,NoiseAlphaVal);
     plot(1:length(handles.currentOutputTime),handles.currentOutputTime);
 guidata(hObject, handles);
 
@@ -305,7 +304,7 @@ function ToEnergyFDPanel_Callback(hObject, eventdata, handles)
         pad = zeros(1,padlength)
         handles.currentOutputTime = horzcat(handles.currentOutputTime,pad);
     end
-    
+    % need 7 of this things
     [error,sigLen,WindowSize,numberofWindows,binNumber,sig] = computeEnergySig(handles.currentOutputTime,handles.samplingFreq)
     handles.currentOutputEE = sig;
     plotDigitinEnergy(hObject, eventdata, handles,sig)

@@ -5,7 +5,6 @@ function [] = plotDigitinEnergy(hObject, eventdata, handles,energySig)
     plot(energySig)
     title('Energy of Signal')
     ylabel('Amplitude')
-    xlabel('Frequency')
-    guidata(hObject, handles);
+    xlabel('Time')
 end
 

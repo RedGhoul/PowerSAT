@@ -142,6 +142,9 @@ function AddNoise_Callback(hObject, eventdata, handles)
     NoiseAlphaVal = str2num(get(handles.AlphaOfNoise,'String'));
     handles.currentOutputTime = startNoise(handles.currentOutputTime,NoiseAlphaVal);
     plot(1:length(handles.currentOutputTime),handles.currentOutputTime);
+    title('Time Domain Signal')
+    ylabel('Amplitude')
+    xlabel('Time [10 Units = 1 milisec]')
 guidata(hObject, handles);
 
 % inserts delay into the signal
@@ -155,6 +158,9 @@ function InsertDelaybtn_Callback(hObject, eventdata, handles)
                 LengthOfDelay = str2num(get(handles.FirstSigDelay,'String'))*handles.unitConvo;
                 [handles.XaxisTime,handles.currentOutputTime] = insertDelay(handles.currentOutputTime,LengthOfDelay,InFront,InBack);
                 plot(handles.XaxisTime,handles.currentOutputTime);
+                title('Time Domain Signal')
+                ylabel('Amplitude')
+                xlabel('Time [10 Units = 1 milisec]')
             else
                 set(handles.ErrorTD,'Visible','On');
             end
@@ -203,12 +209,13 @@ guidata(hObject, handles);
 
 % --- Executes on button press in ViewAsFigure Energy domain.
 function ViewAsFigureEnergy_Callback(hObject, eventdata, handles)
-    if handles.currentOutputEE ~= 0
+trueVal = handles.currentOutputEE;
+    if isempty(handles.currentOutputEE) == false
         set(handles.ErrorEnergy,'Visible','Off');
         figure('Name','Energy Signal Plot');
         plot(1:length(handles.currentOutputEE),handles.currentOutputEE);
         ylabel('Amplitude')
-        xlabel('Index - n')
+        xlabel('Time [10 Units = 1 milisec]')
     else
         set(handles.ErrorEnergy,'Visible','On');
         set(handles.ErrorEnergy,'String','There is nothing to plot');
@@ -267,7 +274,7 @@ function ToEnergyFDPanel_Callback(hObject, eventdata, handles)
     set(handles.TDPanel,'position',handles.Viewable3);
     set(handles.DetectorWindow,'position',handles.Viewable4);
     % this piece of code pads the signal with engough zeros such that it
-    % meets the min signal length
+    % meets the min signal length aka multiple of 1024
     lenOutputTime = length(handles.currentOutputTime)
     multipler = 0;
     bestlength = 0;

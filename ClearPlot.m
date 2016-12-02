@@ -4,7 +4,7 @@ function ClearPlot(hObject, eventdata, handles)
     plot(0,0);
     title('Time Domain Signal')
     ylabel('Amplitude')
-    xlabel('Time Index n')
+    xlabel('Time [10 Units = 1 milisec]')
 
     axes(handles.FreqPlotMag);
     plot(0,0);
@@ -22,7 +22,7 @@ function ClearPlot(hObject, eventdata, handles)
     plot(0,0);
     title('Energy of Signal')
     ylabel('Amplitude')
-    xlabel('Index n')
+    xlabel('Time [10 Units = 1 milisec]')
 
     
 guidata(hObject, handles);

@@ -285,6 +285,7 @@ function ToEnergyFDPanel_Callback(hObject, eventdata, handles)
         pad = zeros(1,padlength)
         handles.currentOutputTime = horzcat(handles.currentOutputTime,pad);
     end
+    
     EnergysOutputed = computeEng(handles.currentOutputTime,handles.freqs,handles.samplingFreq);
     plotDigitinEnergy(hObject, eventdata, handles,EnergysOutputed,handles.freqs)
     handles.currentOutputEE = EnergysOutputed;

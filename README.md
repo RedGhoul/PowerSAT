@@ -1,7 +1,5 @@
 # PowerSAT
 
-A tool to help you visual and analyze the Fast Fourier Transform  
+A GUI based tool to help you visualize and analyze the fast fourier transform on encoded signals.
 
-Built using MATLAB's GUIDE libary
-
-Made with the help of Rua Nour
+Built using MATLAB's GUIDE libary, and the help of Rua Nour
